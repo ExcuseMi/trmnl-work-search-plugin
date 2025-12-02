@@ -171,13 +171,12 @@
         // Decode from base64
         const decoded = atob(encoded);
         
-        // Parse pipe-delimited format: theme|words|solution|gridSize|seed
+        // Parse pipe-delimited format: theme|solution|gridSize|seed (NO WORDS!)
         const parts = decoded.split('|');
         const theme = parts[0];
-        const words = parts[1].split(',');
-        const solutionStr = parts[2];
-        const gridSize = parseInt(parts[3]);
-        const seed = parseInt(parts[4]);
+        const solutionStr = parts[1];
+        const gridSize = parseInt(parts[2]);
+        const seed = parseInt(parts[3]);
         
         const random = seededRandom(seed);
         
@@ -198,27 +197,39 @@
         
         // Parse solution: "pos;dir;len,pos;dir;len,..."
         const solutionParts = solutionStr.split(',');
-        const solution = solutionParts.map((part, idx) => {
+        const solution = solutionParts.map((part) => {
           const [pos, dir, len] = part.split(';').map(Number);
-          const word = words[idx];
           
           // Convert pos back to row/col
           const startRow = Math.floor(pos / gridSize);
           const startCol = pos % gridSize;
           const direction = dirMap[dir];
           
+          // Place letters and extract word from positions
           const positions = [];
+          let word = '';
           for (let i = 0; i < len; i++) {
             const r = startRow + i * direction[0];
             const c = startCol + i * direction[1];
             positions.push([r, c]);
-            grid[r][c] = word[i];
+            
+            // We'll extract the actual letter after filling the grid
           }
           
           return {
-            word: word,
-            positions: positions
+            startRow,
+            startCol,
+            direction,
+            len,
+            positions
           };
+        });
+        
+        // First pass: place all solution words with placeholder
+        solution.forEach(sol => {
+          sol.positions.forEach(([r, c]) => {
+            grid[r][c] = '*'; // Placeholder to mark this is a solution cell
+          });
         });
         
         // Fill remaining cells with seeded random letters
@@ -231,11 +242,34 @@
           }
         }
         
+        // Second pass: fill solution cells with letters
+        solution.forEach(sol => {
+          sol.positions.forEach(([r, c]) => {
+            if (grid[r][c] === '*') {
+              grid[r][c] = letters[Math.floor(random() * letters.length)];
+            }
+          });
+        });
+        
+        // Third pass: extract actual words from grid
+        const words = [];
+        solution.forEach(sol => {
+          let word = '';
+          sol.positions.forEach(([r, c]) => {
+            word += grid[r][c];
+          });
+          sol.word = word;
+          words.push(word);
+        });
+        
         return {
           theme: theme,
           grid: grid,
           words: words,
-          solution: solution,
+          solution: solution.map(s => ({
+            word: s.word,
+            positions: s.positions
+          })),
           gridSize: gridSize
         };
       } catch (e) {
