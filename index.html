@@ -1,338 +1,407 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Word Search Solution</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    
-    body {
-      font-family: 'Courier New', monospace;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
-    
-    .container {
-      background: white;
-      border-radius: 20px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-      padding: 30px;
-      max-width: 800px;
-      width: 100%;
-    }
-    
-    .header {
-      text-align: center;
-      margin-bottom: 30px;
-    }
-    
-    h1 {
-      font-size: 32px;
-      color: #333;
-      margin-bottom: 10px;
-    }
-    
-    .theme {
-      font-size: 18px;
-      color: #666;
-      font-style: italic;
-    }
-    
-    .grid-container {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 30px;
-    }
-    
-    table {
-      border-collapse: collapse;
-    }
-    
-    td {
-      width: 35px;
-      height: 35px;
-      text-align: center;
-      font-weight: bold;
-      font-size: 18px;
-      border: 1px solid #ddd;
-      position: relative;
-      transition: all 0.3s ease;
-    }
-    
-    td.highlighted {
-      color: white;
-      font-weight: 900;
-      transform: scale(1.1);
-      z-index: 10;
-      border-color: rgba(0,0,0,0.3);
-    }
-    
-    .word-legend {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 15px;
-      justify-content: center;
-      margin-top: 20px;
-    }
-    
-    .word-item {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 15px;
-      background: #f5f5f5;
-      border-radius: 8px;
-      font-size: 14px;
-      font-weight: bold;
-    }
-    
-    .color-box {
-      width: 20px;
-      height: 20px;
-      border-radius: 4px;
-      border: 2px solid rgba(0,0,0,0.2);
-    }
-    
-    .error {
-      text-align: center;
-      padding: 40px;
-      color: #e74c3c;
-    }
-    
-    .loading {
-      text-align: center;
-      padding: 40px;
-      color: #666;
-    }
-    
-    @media (max-width: 600px) {
-      .container {
-        padding: 15px;
-      }
-      
-      h1 {
-        font-size: 24px;
-      }
-      
-      td {
-        width: 25px;
-        height: 25px;
-        font-size: 14px;
-      }
-      
-      .word-item {
-        font-size: 12px;
-        padding: 6px 10px;
-      }
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <div class="header">
-      <h1>🔍 Word Search Solution</h1>
-      <div class="theme" id="theme-display"></div>
+{% liquid 
+assign difficulty = trmnl.plugin_settings.custom_fields_values.difficulty | default: "easy"
+assign word_items = data
+assign theme = "Unknown"
+assign word_list = ""
+assign word_count = 8
+for word_item in word_items
+assign word = word_item.word
+if forloop.first
+assign word_list = word
+else
+assign word_list = word_list | append: ", " | append: word
+endif
+endfor
+%}
+<style>
+  :root {
+    --grid-size: {{ grid_size | default: 12 }};
+    --cell-size: calc(100% / var(--grid-size));
+  }
+
+  #puzzle-grid {
+    table-layout: fixed;
+    border-collapse: collapse;
+  }
+
+  #puzzle-grid tr td {
+    width: var(--cell-size);
+    height: var(--cell-size);
+    font-size: clamp(6px, calc(70vw / var(--grid-size)), 24px);
+    font-weight: calc(400 + (var(--grid-size) * 15));   
+    line-height: 1;
+    text-align: center;
+    vertical-align: middle;
+    box-sizing: border-box;
+    font-family: var(--label-font-family);
+  }
+
+  .puzzle {
+    border: solid 1px black;
+    box-sizing: border-box;
+    border-radius: 8px;
+    max-width: 65%;
+    aspect-ratio: 1;
+  }
+</style>
+
+<div class="layout layout--stretch">
+  <div class="flex flex--row flex--center-y flex--evenly stretch">
+    <div class="puzzle stretch h--full">
+      <table id="puzzle-grid" class="text--center h--full"></table>
     </div>
-    
-    <div id="content">
-      <div class="loading">Loading solution...</div>
+    <div class="flex flex--col" id="sidebar">
+      {% if difficulty == "easy" %}
+      <div class="word-list">
+        <div class="label">FIND THESE WORDS:</div>
+        <div class="columns">
+          <div id="word-list" class="column gap--xsmall" data-overflow-max-cols="2">
+          </div>
+        </div>
+      </div>
+      {% else %}
+      <div class="word-list">
+        <div class="label">{{ word_count }} WORDS HIDDEN</div>
+      </div>
+      {% endif %}
+
+      <div class="label">SCAN FOR SOLUTION</div>
+      <div id="qrcode-container" class="bg--white p--1 mb--2 mr--2">
+        <!-- QR code will be inserted here by JS -->
+      </div>
     </div>
   </div>
+</div>
 
-  <script>
-    // Color palette for highlighting words
-    const colors = [
-      '#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8',
-      '#F7DC6F', '#BB8FCE', '#85C1E2', '#F8B739', '#52B788',
-      '#FF8C94', '#A8DADC', '#F4A261', '#E76F51', '#2A9D8F'
-    ];
-    
-    // Seeded random number generator (Mulberry32)
-    function seededRandom(seed) {
-      return function() {
-        let t = seed += 0x6D2B79F5;
-        t = Math.imul(t ^ t >>> 15, t | 1);
-        t ^= t + Math.imul(t ^ t >>> 7, t | 61);
-        return ((t ^ t >>> 14) >>> 0) / 4294967296;
+<div class="title_bar">
+  <span class="title">Word Search</span>
+  <span class="instance">{{theme}}</span>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" integrity="sha512-CNgIRecGo7nphbeZ04Sc13ka07paqdeTu0WR1IM4kNcpmBAUSHSQX0FslNhTDadL4O5SAGapGt4FodqL8My0mA==" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
+<script src="https://cdn.jsdelivr.net/gh/yunruse/trmnl-tricks/QR.js" defer></script>
+
+<script>
+  // Configuration from plugin settings
+  const config = {
+    gridSize: {{ grid_size | default: 12 }},
+    wordCount: {{ word_count | default: 8 }},
+    difficulty: "{{ difficulty | default: 'easy' }}",
+    theme: "{{ theme }}".trim() || null,
+    wordList: "{{ word_list }}"
+  };
+
+  // Seeded random number generator (Mulberry32)
+  function seededRandom(seed) {
+    return function() {
+      let t = seed += 0x6D2B79F5;
+      t = Math.imul(t ^ t >>> 15, t | 1);
+      t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+      return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    };
+  }
+
+  class WordSearchPuzzle {
+    constructor(config) {
+      this.config = config;
+      this.grid = [];
+      this.words = [];
+      this.solution = [];
+      this.theme = config.theme || "Custom Words";
+      this.seed = Date.now();
+      this.random = seededRandom(this.seed);
+    }
+
+    init() {
+      console.log('=== WORD SEARCH PUZZLE GENERATOR ===');
+      console.log('Theme:', this.theme);
+      console.log('Grid Size:', this.config.gridSize);
+      console.log('Difficulty:', this.config.difficulty);
+
+      // Initialize empty grid
+      this.grid = Array(this.config.gridSize).fill(null)
+        .map(() => Array(this.config.gridSize).fill(''));
+
+      // Parse words from wordList
+      this.parseWordList();
+
+      // Place words on grid
+      this.placeWords();
+
+      // Fill empty spaces
+      this.fillGrid();
+
+      // Render
+      this.render();
+
+      // Log solution
+      this.logSolution();
+    }
+
+    parseWordList() {
+      // Split the comma-separated word list
+      const wordArray = this.config.wordList.split(',').map(w => w.trim().toUpperCase());
+
+      // Filter words to fit grid
+      const minLen = 4;
+      const maxLen = Math.min(10, this.config.gridSize - 1);
+
+      this.words = wordArray
+        .filter(w => w.length >= minLen && w.length <= maxLen && /^[A-Z]+$/.test(w))
+        .slice(0, this.config.wordCount);
+
+      // If we don't have enough words from the list, add fallback words
+      if (this.words.length < this.config.wordCount) {
+        console.warn('Not enough valid words from list. Adding fallback words.');
+        const fallbackWords = ['PUZZLE', 'SEARCH', 'FIND', 'WORD', 'GAME', 'FUN', 'BRAIN', 'SOLVE'];
+        for (let i = this.words.length; i < this.config.wordCount; i++) {
+          if (fallbackWords[i - this.words.length]) {
+            this.words.push(fallbackWords[i - this.words.length]);
+          }
+        }
+      }
+
+      console.log('Using words:', this.words);
+    }
+
+    placeWords() {
+      // Directions: horizontal, vertical, diagonal (8 directions)
+      const directions = [
+        [0, 1],   // right
+        [1, 0],   // down
+        [1, 1],   // diagonal down-right
+        [-1, 1],  // diagonal up-right
+        [0, -1],  // left
+        [-1, 0],  // up
+        [-1, -1], // diagonal up-left
+        [1, -1]   // diagonal down-left
+      ];
+
+      for (const word of this.words) {
+        let placed = false;
+        let attempts = 0;
+        const maxAttempts = 100;
+
+        while (!placed && attempts < maxAttempts) {
+          const row = Math.floor(Math.random() * this.config.gridSize);
+          const col = Math.floor(Math.random() * this.config.gridSize);
+          const [dy, dx] = directions[Math.floor(Math.random() * directions.length)];
+
+          if (this.canPlaceWord(word, row, col, dy, dx)) {
+            this.placeWord(word, row, col, dy, dx);
+            placed = true;
+          }
+          attempts++;
+        }
+
+        if (!placed) {
+          console.warn('Could not place word:', word);
+        }
+      }
+    }
+
+    canPlaceWord(word, row, col, dy, dx) {
+      const endRow = row + (word.length - 1) * dy;
+      const endCol = col + (word.length - 1) * dx;
+
+      if (endRow < 0 || endRow >= this.config.gridSize) return false;
+      if (endCol < 0 || endCol >= this.config.gridSize) return false;
+
+      for (let i = 0; i < word.length; i++) {
+        const r = row + i * dy;
+        const c = col + i * dx;
+        if (this.grid[r][c] !== '' && this.grid[r][c] !== word[i]) {
+          return false;
+        }
+      }
+
+      return true;
+    }
+
+    placeWord(word, row, col, dy, dx) {
+      const positions = [];
+      for (let i = 0; i < word.length; i++) {
+        const r = row + i * dy;
+        const c = col + i * dx;
+        this.grid[r][c] = word[i];
+        positions.push([r, c]);
+      }
+
+      this.solution.push({
+        word: word,
+        start: [row, col],
+        end: [row + (word.length - 1) * dy, col + (word.length - 1) * dx],
+        direction: [dy, dx],
+        positions: positions
+      });
+    }
+
+    fillGrid() {
+      const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      for (let r = 0; r < this.config.gridSize; r++) {
+        for (let c = 0; c < this.config.gridSize; c++) {
+          if (this.grid[r][c] === '') {
+            this.grid[r][c] = letters[Math.floor(this.random() * letters.length)];
+          }
+        }
+      }
+    }
+
+    render() {
+      // Render grid
+      const table = document.getElementById('puzzle-grid');
+      table.innerHTML = '';
+
+      for (let r = 0; r < this.config.gridSize; r++) {
+        const tr = document.createElement('tr');
+        for (let c = 0; c < this.config.gridSize; c++) {
+          const td = document.createElement('td');
+          td.textContent = this.grid[r][c];
+          td.className = "";
+          td.style.display = "table-cell";
+          tr.appendChild(td);
+        }
+        table.appendChild(tr);
+      }
+
+      // Render word list (only in easy mode)
+      if (this.config.difficulty === 'easy') {
+        const wordList = document.getElementById('word-list');
+        wordList.innerHTML = '';
+        this.words.forEach(word => {
+          // Create the item container
+          const itemDiv = document.createElement('div');
+          itemDiv.className = 'item';
+
+          // Create the content container
+          const contentDiv = document.createElement('div');
+          contentDiv.className = 'content';
+
+          // Create the description span
+          const span = document.createElement('span');
+          span.className = 'label label--large';
+          span.textContent = word;
+          
+          // Assemble the structure
+          contentDiv.appendChild(span);
+          itemDiv.appendChild(contentDiv);
+          wordList.appendChild(itemDiv);
+        });
+      }
+
+      // Generate QR code solution URL
+      this.generateQR();
+    }
+
+    generateQR() {
+      // Generate seed from timestamp for reproducible random generation
+      const seed = Date.now();
+      
+      // ULTRA-COMPACT STRING FORMAT: "pos;dir;len,pos;dir;len,..."
+      // pos = row*gridSize + col (single number)
+      // dir = 0-7 (8 directions as single digit)
+      // len = word length (single/double digit)
+      const dirMap = {
+        '0,1': 0,   // right
+        '1,0': 1,   // down
+        '1,1': 2,   // diagonal down-right
+        '-1,1': 3,  // diagonal up-right
+        '0,-1': 4,  // left
+        '-1,0': 5,  // up
+        '-1,-1': 6, // diagonal up-left
+        '1,-1': 7   // diagonal down-left
       };
+      
+      const encodedSolution = this.solution.map(s => {
+        const pos = s.start[0] * this.config.gridSize + s.start[1];
+        const dir = dirMap[s.direction.join(',')];
+        const len = s.word.length;
+        return `${pos};${dir};${len}`;
+      }).join(',');
+      
+      // Compact format: theme|words|solution|gridSize|seed
+      const compactStr = `${this.theme}|${this.words.join(',')}|${encodedSolution}|${this.config.gridSize}|${seed}`;
+      const encoded = btoa(compactStr);
+      const solutionUrl = `https://excusemi.github.io/trmnl-word-search-plugin/?p=${encoded}`;
+
+      console.log('Solution URL:', solutionUrl);
+      console.log('URL Length:', solutionUrl.length, 'characters');
+      console.log('Payload size:', encoded.length, 'bytes');
+      console.log('Compact string:', compactStr.substring(0, 100) + '...');
+      console.log('Random seed:', seed);
+      
+      // Store URL and generate QR code after delay
+      this.solutionUrl = solutionUrl;
+      setTimeout(() => this.createQRCode(), 500);
     }
     
-    function decodeData(encoded) {
+    createQRCode() {
+      const qrContainer = document.getElementById('qrcode-container');
+      
+      if (!qrContainer) {
+        console.error('QR container not found');
+        return;
+      }
+      
+      if (typeof QRCode === 'undefined') {
+        console.warn('QRCode library not ready, retrying...');
+        setTimeout(() => this.createQRCode(), 500);
+        return;
+      }
+      
       try {
-        // Decode from base64
-        const decoded = atob(encoded);
+        // Clear container
+        qrContainer.innerHTML = '';
         
-        // Parse pipe-delimited format: theme|solution|gridSize|seed (NO WORDS!)
-        const parts = decoded.split('|');
-        const theme = parts[0];
-        const solutionStr = parts[1];
-        const gridSize = parseInt(parts[2]);
-        const seed = parseInt(parts[3]);
+        // Create wrapper div
+        const wrapper = document.createElement('div');
+        wrapper.style.display = 'inline-block';
+        wrapper.style.padding = '8px';
+        wrapper.style.background = 'white';
+        qrContainer.appendChild(wrapper);
         
-        const random = seededRandom(seed);
-        
-        // Direction map (reverse of encoding)
-        const dirMap = [
-          [0, 1],   // 0: right
-          [1, 0],   // 1: down
-          [1, 1],   // 2: diagonal down-right
-          [-1, 1],  // 3: diagonal up-right
-          [0, -1],  // 4: left
-          [-1, 0],  // 5: up
-          [-1, -1], // 6: diagonal up-left
-          [1, -1]   // 7: diagonal down-left
-        ];
-        
-        // Initialize empty grid
-        const grid = Array(gridSize).fill(null).map(() => Array(gridSize).fill(''));
-        
-        // Fill ALL cells with seeded random letters FIRST (same as original puzzle)
-        const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        for (let r = 0; r < gridSize; r++) {
-          for (let c = 0; c < gridSize; c++) {
-            grid[r][c] = letters[Math.floor(random() * letters.length)];
-          }
-        }
-        
-        // Parse solution and extract words from the already-filled grid
-        const solutionParts = solutionStr.split(',');
-        const solution = solutionParts.map((part) => {
-          const [pos, dir, len] = part.split(';').map(Number);
-          
-          // Convert pos back to row/col
-          const startRow = Math.floor(pos / gridSize);
-          const startCol = pos % gridSize;
-          const direction = dirMap[dir];
-          
-          // Extract word from grid at these positions
-          const positions = [];
-          let word = '';
-          for (let i = 0; i < len; i++) {
-            const r = startRow + i * direction[0];
-            const c = startCol + i * direction[1];
-            positions.push([r, c]);
-            word += grid[r][c]; // Read letter that's already in the grid
-          }
-          
-          return {
-            word,
-            positions
-          };
+        // Generate QR code
+        const qr = new QRCode(wrapper, {
+          text: this.solutionUrl,
+          width: 128,
+          height: 128,
+          colorDark: '#000000',
+          colorLight: '#ffffff',
+          correctLevel: QRCode.CorrectLevel.L
         });
         
-        const words = solution.map(s => s.word);
+        console.log('QR code generated successfully');
         
-        return {
-          theme: theme,
-          grid: grid,
-          words: words,
-          solution: solution,
-          gridSize: gridSize
-        };
-      } catch (e) {
-        console.error('Failed to decode data:', e);
-        return null;
-      }
-    }
-    
-    function renderSolution(data) {
-      const { theme, grid, words, solution, gridSize } = data;
-      
-      // Update theme
-      document.getElementById('theme-display').textContent = 
-        `Theme: ${theme.charAt(0).toUpperCase() + theme.slice(1)}`;
-      
-      // Build grid HTML
-      let html = '<div class="grid-container"><table id="puzzle-grid">';
-      
-      for (let r = 0; r < gridSize; r++) {
-        html += '<tr>';
-        for (let c = 0; c < gridSize; c++) {
-          const letter = grid[r][c];
-          html += `<td data-row="${r}" data-col="${c}">${letter}</td>`;
-        }
-        html += '</tr>';
-      }
-      
-      html += '</table></div>';
-      
-      // Add word legend
-      html += '<div class="word-legend">';
-      solution.forEach((sol, idx) => {
-        const color = colors[idx % colors.length];
-        html += `
-          <div class="word-item">
-            <div class="color-box" style="background: ${color}"></div>
-            <span>${sol.word}</span>
-          </div>
-        `;
-      });
-      html += '</div>';
-      
-      document.getElementById('content').innerHTML = html;
-      
-      // Highlight solution
-      setTimeout(() => highlightSolution(solution), 100);
-    }
-    
-    function highlightSolution(solution) {
-      solution.forEach((sol, idx) => {
-        const color = colors[idx % colors.length];
-        const delay = idx * 200; // Stagger animations
-        
-        sol.positions.forEach((pos, posIdx) => {
-          const [r, c] = pos;
-          const cell = document.querySelector(`td[data-row="${r}"][data-col="${c}"]`);
-          
-          if (cell) {
-            setTimeout(() => {
-              cell.classList.add('highlighted');
-              cell.style.backgroundColor = color;
-            }, delay + (posIdx * 50));
+        // Style for e-ink after image loads
+        setTimeout(() => {
+          const img = wrapper.querySelector('img');
+          if (img) {
+            img.style.imageRendering = 'pixelated';
+            img.style.display = 'block';
+            console.log('QR code image styled');
+          } else {
+            console.error('QR code img element not found');
           }
-        });
+        }, 200);
+        
+      } catch (error) {
+        console.error('Error generating QR code:', error);
+      }
+    }
+
+    logSolution() {
+      console.log('\n=== SOLUTION ===');
+      this.solution.forEach(s => {
+        console.log(`${s.word}: Start[${s.start}] → End[${s.end}] Direction[${s.direction}]`);
+        console.log('  Positions:', s.positions.map(p => `[${p}]`).join(' '));
       });
+      console.log('\nAll words placed:', this.words.join(', '));
     }
-    
-    function showError(message) {
-      document.getElementById('content').innerHTML = `
-        <div class="error">
-          <h2>❌ Error</h2>
-          <p>${message}</p>
-        </div>
-      `;
-    }
-    
-    // Main initialization
-    window.addEventListener('DOMContentLoaded', () => {
-      // Get URL parameter
-      const urlParams = new URLSearchParams(window.location.search);
-      const encoded = urlParams.get('p');
-      
-      if (!encoded) {
-        showError('No puzzle data found in URL. Please scan a valid QR code.');
-        return;
-      }
-      
-      // Decode and render
-      const data = decodeData(encoded);
-      
-      if (!data) {
-        showError('Invalid puzzle data. Please try scanning the QR code again.');
-        return;
-      }
-      
-      renderSolution(data);
-    });
-  </script>
-</body>
-</html>
+  }
+
+  // Initialize puzzle when page loads
+  window.addEventListener('DOMContentLoaded', () => {
+    const puzzle = new WordSearchPuzzle(config);
+    puzzle.init();
+  });
+</script>
