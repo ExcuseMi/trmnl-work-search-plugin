@@ -1,0 +1,16 @@
+{% liquid 
+if difficulty != "hard"
+  assign show_qr = false
+  assign show_words = true
+else
+  assign show_qr = true
+  assign show_words = false
+endif
+
+%}
+
+{% render "puzzle", puzzle: small_puzzle, trmnl:trmnl, stretch: ' h--full', show_qr:show_qr, 
+show_words:show_words %}
+
+<script>
+</script>

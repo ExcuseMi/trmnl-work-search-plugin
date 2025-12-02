@@ -1,0 +1,126 @@
+{% liquid 
+assign use_8 = trmnl.plugin_settings.custom_fields_values.use_8 | default: "yes"
+if use_8 == "yes"
+  assign small_puzzle = IDX_1
+else
+  assign small_puzzle = IDX_0
+endif
+assign big_puzzle = IDX_0
+%}
+
+{% template grid %}
+    <div class="puzzle {{stretch}}" style="aspect-ratio: 1;">
+
+      <table id="puzzle-grid" class="text--center" style="aspect-ratio: 1;">
+        {% comment %} Render the grid using Liquid {% endcomment %}
+        {% for i in (0..gridSize) %}
+        {% assign row_index = i %}
+        {% if i < gridSize %}
+                  <tr>
+                    {% for j in (0..gridSize) %}
+                    {% assign col_index = j %}
+                    {% if j < gridSize %}
+                              {% assign cell_index = row_index | times: gridSize | plus: col_index %}
+                              <td>{{ grid | slice: cell_index, 1 }}</td>
+                      {% endif %}
+                      {% endfor %}
+                  </tr>
+          {% endif %}
+          {% endfor %}
+      </table>
+    </div>
+
+{% endtemplate %}
+{% template puzzle %}
+{% liquid 
+assign difficulty = trmnl.plugin_settings.custom_fields_values.difficulty | default: "easy"
+
+# Extract words from solution using Liquid
+assign solution = puzzle.solution
+assign wordlist = puzzle.wordlist
+assign theme = puzzle.theme
+assign gridSize = puzzle.gridSize
+assign grid = puzzle.grid
+
+assign solution_parts = solution | split: ','
+assign word_count = wordlist.size
+assign id = puzzle.id
+# Split word_list into an array for easy access
+assign words = wordlist
+
+# Convert grid string to 2D array for rendering
+assign grid_array = ''
+assign gridSize_squared = gridSize | times: gridSize
+unless wordlist_layout 
+assign wordlist_layout = "col"
+endunless
+# Build QR code URL
+assign qr_data = 'https://excusemi.github.io/trmnl-word-search-plugin/?id=' | append: id
+%}
+
+<style>
+  #puzzle-grid {
+    table-layout: fixed;
+    border-collapse: collapse;
+    aspect-ratio: 1;
+  }
+
+  #puzzle-grid tr td {
+    width: var(--cell-size);
+    height: var(--cell-size);
+    font-size: clamp(
+      calc(8px * var(--ui-scale, 1)), 
+      calc(70vw / var(--grid-size) * var(--ui-scale, 1)), 
+      calc(48px * var(--ui-scale, 1))
+    );
+    font-weight: calc(600 + (var(--grid-size) * 15 * var(--ui-scale, 1)));
+    line-height: 1;
+    text-align: center;
+    vertical-align: middle;
+    box-sizing: border-box;
+    font-family: var(--label-font-family);
+    border: solid 1px black;
+    aspect-ratio: 1;
+  }
+</style>
+<div class="layout layout--stretch layout--center">
+  <div class="flex flex--row flex--center flex--evenly stretch">
+    {% unless horizontal %}
+      {% render "grid", grid: grid, gridSize:gridSize, stretch: stretch %}
+    {% endunless %}
+    <div class="flex flex--center flex--{{wordlist_layout}} gap--xlarge  stretch">
+      {% if show_words %}
+      {% if difficulty != "hard" %}
+      <div class="flex flex--col gap">
+        <div class="label label--underline mb-4">{{ word_count }} HIDDEN WORDS </div>
+        <div class="grid grid--cols-2 gap--small">
+          {% for word in wordlist %}
+          <span class="label">{{ word }}</span>
+          {% endfor %}
+        </div>
+      </div>      
+      {% else %}
+      <div>
+        <div class="label label--underline  mb-4">{{ word_count }} HIDDEN WORDS</div>
+      </div>
+      {% endif %}
+      {% endif %}
+
+      {% if horizontal %}
+            {% render "grid", grid: grid, gridSize:gridSize, stretch: stretch %}
+      {% endif %}
+      {% if show_qr %}
+      <div class="flex flex--col"> 
+        <div class="label label--underline  mb-4">SCAN FOR SOLUTION </div>
+        {{ qr_data | qr_code: 3, 'm' }}</div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<div class="title_bar">
+  <span class="title text--stroke">Word Search</span>
+  <span class="label label--inverted">{{ theme | capitalize }}</span>
+  <span class="instance">{{ difficulty | capitalize }} ({{ wordlist.size }} words)</span>
+</div>
+{% endtemplate %}

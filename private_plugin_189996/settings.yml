@@ -1,0 +1,46 @@
+---
+strategy: polling
+no_screen_padding: 'no'
+dark_mode: 'no'
+static_data: ''
+polling_verb: get
+polling_url: "{% liquid \r\n\r\nassign index = trmnl.system.timestamp_utc | modulo: 3500 | plus: 0\r\n%}\r\nhttps://raw.githubusercontent.com/ExcuseMi/trmnl-word-search-plugin/main/data/{{size}}/{{difficulty}}/{{index}}.json\r\n\r\nhttps://raw.githubusercontent.com/ExcuseMi/trmnl-word-search-plugin/main/data/8/{{difficulty}}/{{index}}.json"
+polling_headers: ''
+polling_body: ''
+id: 189996
+custom_fields:
+- keyname: about
+  name: About This Plugin
+  field_type: author_bio
+  description: Solve <strong>Word Search</strong>es directly on your TRMNL!<br /><br /> Get stuck on a tricky word search puzzle?<br />Simply scan the QR code to reveal the solution!
+  github_url: https://github.com/ExcuseMi/trmnl-word-search-plugin
+- keyname: difficulty
+  field_type: select
+  name: Difficulty
+  options:
+  - Easy
+  - Medium
+  - Hard
+  default: medium
+  optional: true
+- keyname: size
+  field_type: select
+  name: Size
+  description: Size of the grid
+  options:
+  - 10x10: '10'
+  - 12x12: '12'
+  - 15x15: '15'
+  default: '10'
+  optional: true
+- keyname: use_8
+  field_type: select
+  name: Use 8x8 for smaller views
+  description: 8x8 grids will be used to display on smaller views. Recommend for TRMNL OG.
+  options:
+  - 'Yes': 'yes'
+  - 'no': 'no'
+  default: 'yes'
+  optional: true
+name: Word Search
+refresh_interval: 30
