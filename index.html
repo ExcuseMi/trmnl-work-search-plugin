@@ -161,7 +161,18 @@
         // Decode from base64
         const decoded = atob(encoded);
         const data = JSON.parse(decoded);
-        return data;
+        
+        // Map compact keys to full names
+        return {
+          theme: data.t,
+          grid: data.g,
+          words: data.w,
+          solution: data.s.map(s => ({
+            word: s.w,
+            positions: s.p
+          })),
+          gridSize: data.z
+        };
       } catch (e) {
         console.error('Failed to decode data:', e);
         return null;
