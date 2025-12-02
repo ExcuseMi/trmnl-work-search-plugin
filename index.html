@@ -156,101 +156,92 @@
       '#FF8C94', '#A8DADC', '#F4A261', '#E76F51', '#2A9D8F'
     ];
     
-    // Seeded random number generator (Mulberry32)
-    function seededRandom(seed) {
-      return function() {
-        let t = seed += 0x6D2B79F5;
-        t = Math.imul(t ^ t >>> 15, t | 1);
-        t ^= t + Math.imul(t ^ t >>> 7, t | 61);
-        return ((t ^ t >>> 14) >>> 0) / 4294967296;
-      };
-    }
+    const GITHUB_REPO = 'https://raw.githubusercontent.com/ExcuseMi/trmnl-word-search-plugin/main';
     
-    function decodeData(encoded) {
+    async function loadPuzzle(puzzleId) {
       try {
-        // Decode from base64
-        const decoded = atob(encoded);
-        
-        // Parse pipe-delimited format: theme|grid|solution|gridSize
-        const parts = decoded.split('|');
-        const theme = parts[0];
-        const gridStr = parts[1];
-        const solutionStr = parts[2];
-        const gridSize = parseInt(parts[3]);
-        
-        // Direction map (reverse of encoding)
-        const dirMap = [
-          [0, 1],   // 0: right
-          [1, 0],   // 1: down
-          [1, 1],   // 2: diagonal down-right
-          [-1, 1],  // 3: diagonal up-right
-          [0, -1],  // 4: left
-          [-1, 0],  // 5: up
-          [-1, -1], // 6: diagonal up-left
-          [1, -1]   // 7: diagonal down-left
-        ];
-        
-        // Rebuild grid from string
+        // Parse the ID format: "10-easy-1" or "10-easy-123"
+        const [size, difficulty, fileNumber] = puzzleId.split('-');
+
+        // Validate the parts
+        if (!size || !difficulty || !fileNumber) {
+          throw new Error(`Invalid puzzle ID format: ${puzzleId}. Expected format: "size-difficulty-filenumber" (e.g., "10-easy-1")`);
+        }
+
+        // Convert fileNumber to integer for basic validation
+        const fileNum = parseInt(fileNumber);
+        if (isNaN(fileNum) || fileNum < 1) {
+          throw new Error(`Invalid file number in puzzle ID: ${puzzleId}`);
+        }
+
+        // Construct the file path (no zero-padding)
+        const puzzleFile = `${GITHUB_REPO}/data/${size}/${difficulty}/${fileNumber}.json`;
+
+        // Fetch puzzle
+        const puzzleResponse = await fetch(puzzleFile);
+        if (!puzzleResponse.ok) {
+          throw new Error(`Failed to load puzzle file: ${puzzleFile}`);
+        }
+
+        const puzzle = await puzzleResponse.json();
+
+        // Convert grid string to 2D array
         const grid = [];
-        for (let r = 0; r < gridSize; r++) {
+        for (let r = 0; r < puzzle.gridSize; r++) {
           const row = [];
-          for (let c = 0; c < gridSize; c++) {
-            row.push(gridStr[r * gridSize + c]);
+          for (let c = 0; c < puzzle.gridSize; c++) {
+            row.push(puzzle.grid[r * puzzle.gridSize + c]);
           }
           grid.push(row);
         }
-        
-        // Parse solution and extract words from grid
-        const solutionParts = solutionStr.split(',');
-        const solution = solutionParts.map((part) => {
+
+        // Parse solution and extract words
+        const dirMap = [[0,1], [1,0], [1,1], [-1,1], [0,-1], [-1,0], [-1,-1], [1,-1]];
+        const solutionParts = puzzle.solution.split(',');
+        const solution = solutionParts.map(part => {
           const [pos, dir, len] = part.split(';').map(Number);
-          
-          // Convert pos back to row/col
-          const startRow = Math.floor(pos / gridSize);
-          const startCol = pos % gridSize;
-          const direction = dirMap[dir];
-          
-          // Extract word from grid
+          const startRow = Math.floor(pos / puzzle.gridSize);
+          const startCol = pos % puzzle.gridSize;
+          const [dy, dx] = dirMap[dir];
+
           const positions = [];
           let word = '';
           for (let i = 0; i < len; i++) {
-            const r = startRow + i * direction[0];
-            const c = startCol + i * direction[1];
+            const r = startRow + i * dy;
+            const c = startCol + i * dx;
             positions.push([r, c]);
             word += grid[r][c];
           }
-          
-          return {
-            word,
-            positions
-          };
+
+          return { word, positions };
         });
-        
+
         const words = solution.map(s => s.word);
-        
-        return {
-          theme: theme,
+
+        renderSolution({
+          theme: puzzle.theme,
           grid: grid,
           words: words,
           solution: solution,
-          gridSize: gridSize
-        };
+          gridSize: puzzle.gridSize
+        });
+
       } catch (e) {
-        console.error('Failed to decode data:', e);
-        return null;
+        console.error('Failed to load puzzle:', e);
+        showError(`Failed to load puzzle: ${e.message}`);
       }
     }
-    
+
     function renderSolution(data) {
       const { theme, grid, words, solution, gridSize } = data;
-      
+
       // Update theme
-      document.getElementById('theme-display').textContent = 
+      document.getElementById('theme-display').textContent =
         `Theme: ${theme.charAt(0).toUpperCase() + theme.slice(1)}`;
-      
+
       // Build grid HTML
       let html = '<div class="grid-container"><table id="puzzle-grid">';
-      
+
       for (let r = 0; r < gridSize; r++) {
         html += '<tr>';
         for (let c = 0; c < gridSize; c++) {
@@ -259,9 +250,9 @@
         }
         html += '</tr>';
       }
-      
+
       html += '</table></div>';
-      
+
       // Add word legend
       html += '<div class="word-legend">';
       solution.forEach((sol, idx) => {
@@ -274,22 +265,22 @@
         `;
       });
       html += '</div>';
-      
+
       document.getElementById('content').innerHTML = html;
-      
+
       // Highlight solution
       setTimeout(() => highlightSolution(solution), 100);
     }
-    
+
     function highlightSolution(solution) {
       solution.forEach((sol, idx) => {
         const color = colors[idx % colors.length];
         const delay = idx * 200; // Stagger animations
-        
+
         sol.positions.forEach((pos, posIdx) => {
           const [r, c] = pos;
           const cell = document.querySelector(`td[data-row="${r}"][data-col="${c}"]`);
-          
+
           if (cell) {
             setTimeout(() => {
               cell.classList.add('highlighted');
@@ -299,7 +290,7 @@
         });
       });
     }
-    
+
     function showError(message) {
       document.getElementById('content').innerHTML = `
         <div class="error">
@@ -308,27 +299,20 @@
         </div>
       `;
     }
-    
+
     // Main initialization
     window.addEventListener('DOMContentLoaded', () => {
       // Get URL parameter
       const urlParams = new URLSearchParams(window.location.search);
-      const encoded = urlParams.get('p');
-      
-      if (!encoded) {
-        showError('No puzzle data found in URL. Please scan a valid QR code.');
+      const puzzleId = urlParams.get('id');
+
+      if (!puzzleId) {
+        showError('No puzzle ID found in URL. Please scan a valid QR code.');
         return;
       }
       
-      // Decode and render
-      const data = decodeData(encoded);
-      
-      if (!data) {
-        showError('Invalid puzzle data. Please try scanning the QR code again.');
-        return;
-      }
-      
-      renderSolution(data);
+      // Load and render puzzle
+      loadPuzzle(puzzleId);
     });
   </script>
 </body>
