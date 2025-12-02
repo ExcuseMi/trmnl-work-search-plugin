@@ -32,7 +32,7 @@ THEMES = [
     "wine", "tea", "chocolate", "comedy", "romance", "mystery", "horror"
 ]
 
-GRID_SIZES = [10, 12, 15]
+GRID_SIZES = [8]
 DIFFICULTIES = ["easy", "medium", "hard"]
 PUZZLES_PER_THEME = 40
 
