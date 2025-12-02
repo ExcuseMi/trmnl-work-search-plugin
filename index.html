@@ -179,24 +179,25 @@
         // Initialize empty grid
         const grid = Array(gridSize).fill(null).map(() => Array(gridSize).fill(''));
         
-        // Regenerate solution with full positions from start/end/direction
+        // Regenerate solution - data.s is now arrays: [word, start, direction]
         const solution = data.s.map(sol => {
-          const positions = [];
-          const [startRow, startCol] = sol.s;
-          const [endRow, endCol] = sol.e;
-          const [dy, dx] = sol.d;
+          const word = sol[0];
+          const [startRow, startCol] = sol[1];
+          const [dy, dx] = sol[2];
           
-          // Calculate positions from start to end using direction
-          const wordLen = sol.w.length;
+          const positions = [];
+          const wordLen = word.length;
+          
+          // Calculate all positions from start + direction
           for (let i = 0; i < wordLen; i++) {
             const r = startRow + i * dy;
             const c = startCol + i * dx;
             positions.push([r, c]);
-            grid[r][c] = sol.w[i];
+            grid[r][c] = word[i];
           }
           
           return {
-            word: sol.w,
+            word: word,
             positions: positions
           };
         });
