@@ -1,1 +1,1 @@
-{"id":"8-hard-1989","theme":"island","grid":"XAHTQFODJGDXETPMYXCYZLDRGKEROYZETIARTSBEFIEEPTGFDYIFGYVWGNIYLRJS","solution":"32;0;6;STRAIT,23;1;4;REEF,60;4;5;LYING,51;5;5;FERRY","gridSize":8,"difficulty":"hard","wordCount":4,"wordlist":["REEF","FERRY","LYING","STRAIT"]}
+{"id":"8-hard-1989","theme":"dock","grid":"SSETAGWPLIPIERJXHUMBERMASHSLIUUQQHXYAZLEUYIKXDUZAMMPAIINYEYASTRT","solution":"16;0;6;HUMBER,24;2;5;SHIPS,63;6;5;TIDAL,5;4;5;GATES,32;1;4;QUAY,10;0;4;PIER","gridSize":8,"difficulty":"hard","wordCount":6,"wordlist":["PIER","QUAY","GATES","SHIPS","TIDAL","HUMBER"]}

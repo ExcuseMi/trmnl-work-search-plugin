@@ -1,1 +1,1 @@
-{"id":"8-medium-390","theme":"irrigation","grid":"HARIDOSHQAXKEYCXKEYTHTKDBPQYIUPABDNDCYDMCROPSFRSEVRTEMIFNTGZEHPT","solution":"38;1;4;DRIP,23;1;4;DAMS,35;3;5;DITCH,1;0;4;ARID,40;0;5;CROPS","gridSize":8,"difficulty":"medium","wordCount":5,"wordlist":["ARID","DAMS","DRIP","CROPS","DITCH"]}
+{"id":"8-medium-390","theme":"noise","grid":"EZPYUPOPPPLPNHAYAYOSRPHBTEUIASOFCRDGTHOCRRPNIZKIUOYAORRXNRSLTTCS","solution":"19;1;6;SIGNAL,20;1;5;RATIO,25;1;5;ERROR,0;1;4;TAPE,10;1;4;LOUD","gridSize":8,"difficulty":"medium","wordCount":5,"wordlist":["LOUD","TAPE","ERROR","RATIO","SIGNAL"]}

@@ -1,1 +1,1 @@
-{"id":"8-hard-2472","theme":"algorithm","grid":"AWHAFTVCNEUSHAXVCQLXAEAHIWIATHBPPGORSJLAHNEMRGPREVHGNRRGRXLFEXLW","solution":"29;6;4;HASH,55;5;5;GRAPH,49;3;6;VERTEX,16;1;6;CIPHER","gridSize":8,"difficulty":"hard","wordCount":4,"wordlist":["HASH","GRAPH","CIPHER","VERTEX"]}
+{"id":"8-hard-2472","theme":"cards","grid":"KPCCZKIWQHAACRPXEHDASKGHDRPRGHZVHETSABAJARAOVCDMNTZLLLECDWUJTSNQ","solution":"24;2;5;DEALT,61;6;4;SLOT,26;3;4;PACK,29;6;4;CASH,45;6;4;CARD,56;5;4;HAND","gridSize":8,"difficulty":"hard","wordCount":6,"wordlist":["CARD","CASH","HAND","PACK","SLOT","DEALT"]}

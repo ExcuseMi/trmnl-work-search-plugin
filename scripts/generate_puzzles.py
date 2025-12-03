@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-Word Search Puzzle Generator (Simplified & Reliable)
-- Supports 3500 puzzles per {grid_size}/{difficulty}
-- Stores theme words locally to avoid repeated API calls
+Word Search Puzzle Generator (Fixed Verification)
+- Proper solution verification
+- Reliable puzzle generation
 """
 
 import requests
@@ -12,7 +12,6 @@ import time
 import logging
 from pathlib import Path
 from typing import Dict, List, Tuple, Optional
-from collections import defaultdict
 
 # ------------------------------------------------------------
 # Configuration
@@ -108,108 +107,101 @@ def update_theme_cache(themes: List[str]) -> Dict[str, List[str]]:
     Returns the complete cache.
     """
     cache = load_theme_cache()
-    new_themes_fetched = 0
+    return cache
+    # If cache exists and has most themes, use it
+    if cache and len(cache) >= len(themes) * 0.5:
+        logging.info(f"Using existing cache with {len(cache)} themes")
+        return cache
+
+    # Otherwise fetch missing themes
+    logging.info(f"Fetching words for {len(themes)} themes")
 
     for theme in themes:
-        # Check if theme already exists
-        if theme in cache and cache[theme] and len(cache[theme]) >= 30:
-            continue  # Skip, already cached with enough words
+        if theme not in cache or len(cache.get(theme, [])) < 20:
+            words = fetch_theme_words(theme)
+            if words:
+                cache[theme] = words
+                logging.debug(f"Cached {len(words)} words for '{theme}'")
 
-        words = fetch_theme_words(theme)
-        if words:  # Cache whatever we get
-            cache[theme] = words
-            new_themes_fetched += 1
-            logging.debug(f"Cached {len(words)} words for '{theme}'")
+            # Respect API rate limits
+            time.sleep(0.3)
 
-        # Respect API rate limits
-        time.sleep(0.3)
-
-        # Save periodically
-        if new_themes_fetched % 20 == 0:
-            save_theme_cache(cache)
-
-    if new_themes_fetched > 0:
-        save_theme_cache(cache)
-        logging.info(f"Fetched words for {new_themes_fetched} new themes")
-
+    save_theme_cache(cache)
     return cache
 
 
 # ------------------------------------------------------------
-# Difficulty Profiles
+# SIMPLE Duplicate Prevention
+# ------------------------------------------------------------
+def has_similar_words(words: List[str]) -> bool:
+    """Check if list contains obvious duplicates like wetland/wetlands."""
+    word_set = set(words)
+
+    # Check for exact matches with 's' suffix
+    for word in words:
+        # Check word + 'S'
+        if word + 'S' in word_set:
+            return True
+        # Check word without trailing 'S'
+        if word.endswith('S') and word[:-1] in word_set:
+            return True
+        # Check word + 'ES'
+        if word + 'ES' in word_set:
+            return True
+        if word.endswith('ES') and word[:-2] in word_set:
+            return True
+
+    return False
+
+
+# ------------------------------------------------------------
+# Simple Difficulty Profiles
 # ------------------------------------------------------------
 def get_difficulty_params(difficulty: str, grid_size: int) -> Dict:
     """Get parameters for a specific difficulty level."""
+
     if difficulty == "easy":
-        # Easy: Simple, clean puzzles
-        word_count = min(grid_size, 8)
         return {
             'difficulty_label': 'easy',
             'directions': [(0, 1), (1, 0)],  # Only Right and Down
-            'backwards_ratio': 0.0,
-            'word_count': word_count,
+            'backwards_ratio': 0.00,
+            'word_count': max(4, min(6, grid_size // 2)),
             'min_len': 4,
             'max_len': min(6, grid_size - 2),
-            'placement_attempts': 100,
-            'min_words_required': max(3, word_count * 0.7)
+            'placement_attempts': 200,
+            'min_words_required': 3
         }
 
     elif difficulty == "medium":
-        # Medium: Moderate challenge
-        word_count = int(grid_size * 0.65)
-        if grid_size == 15:
-            word_count = 9
-        elif grid_size == 12:
-            word_count = 8
-        elif grid_size == 10:
-            word_count = 6
-        else:  # 8x8
-            word_count = 5
-
         return {
             'difficulty_label': 'medium',
             'directions': [(0, 1), (1, 0), (1, 1), (-1, 1)],  # 4 directions
-            'backwards_ratio': 0.08,
-            'word_count': word_count,
+            'backwards_ratio': 0.15,
+            'word_count': max(5, min(8, grid_size // 2 + 1)),
             'min_len': 4,
             'max_len': min(8, grid_size - 2),
-            'placement_attempts': 150,
-            'min_words_required': max(4, word_count * 0.7)
+            'placement_attempts': 200,
+            'min_words_required': 4
         }
 
     else:  # hard
-        # Hard: Maximum challenge but still playable
-        if grid_size == 15:
-            word_count = 7
-            max_len = 10
-        elif grid_size == 12:
-            word_count = 6
-            max_len = 8
-        elif grid_size == 10:
-            word_count = 5
-            max_len = 7
-        else:  # 8x8
-            word_count = 4
-            max_len = 6
-
         return {
             'difficulty_label': 'hard',
             'directions': ALL_DIRECTIONS,  # All 8 directions
             'backwards_ratio': 0.25,
-            'word_count': word_count,
+            'word_count': max(6, min(10, grid_size // 2 + 2)),
             'min_len': 4,
-            'max_len': max_len,
-            'placement_attempts': 200,
-            'min_words_required': max(3, word_count * 0.7)
+            'max_len': min(10, grid_size - 2),
+            'placement_attempts': 300,
+            'min_words_required': 4
         }
 
 
 # ------------------------------------------------------------
 # Word Filtering
 # ------------------------------------------------------------
-def filter_words(words: List[str], min_len: int, max_len: int, target_count: int) -> List[str]:
-    """Filter words by length and remove duplicates."""
-    # Filter by length and alphabetic
+def filter_words(words: List[str], min_len: int, max_len: int) -> List[str]:
+    """Filter words by length."""
     filtered = []
     seen = set()
 
@@ -221,8 +213,7 @@ def filter_words(words: List[str], min_len: int, max_len: int, target_count: int
             seen.add(w_upper)
             filtered.append(w_upper)
 
-    # Return enough words for selection
-    return filtered[:target_count * 3]
+    return filtered
 
 
 # ------------------------------------------------------------
@@ -254,115 +245,140 @@ def place_word(grid: List[List[str]], word: str, r: int, c: int, dy: int, dx: in
 
 
 # ------------------------------------------------------------
-# Puzzle Generator - SIMPLIFIED AND RELIABLE
+# FIXED Puzzle Generator
 # ------------------------------------------------------------
 def generate_puzzle(theme: str, size: int, params: Dict,
                     available_words: List[str], puzzle_id: str) -> Optional[Dict]:
-    """Generate a single word search puzzle."""
-    grid = [['' for _ in range(size)] for _ in range(size)]
-    dirs = params['directions']
-    attempts = params['placement_attempts']
+    """Generate a single word search puzzle with fixed verification."""
 
-    # Filter and select words
-    filtered = [w for w in available_words
-                if params['min_len'] <= len(w) <= params['max_len']]
+    # Initialize empty grid
+    grid = [['' for _ in range(size)] for _ in range(size)]
+    directions = params['directions']
+
+    # Filter words
+    filtered = filter_words(available_words, params['min_len'], params['max_len'])
 
     if len(filtered) < params['word_count']:
+        logging.debug(f"Not enough filtered words for {puzzle_id}")
         return None
 
-    # Select unique words
-    base_words = []
-    seen = set()
-    for w in filtered:
-        if w not in seen:
-            seen.add(w)
-            base_words.append(w)
-        if len(base_words) >= params['word_count']:
-            break
+    # Select words
+    random.shuffle(filtered)
+    selected_words = filtered[:params['word_count']]
 
-    if len(base_words) < params['word_count']:
+    # Check for obvious duplicates
+    if has_similar_words(selected_words):
+        logging.debug(f"Similar words detected in selection for {puzzle_id}")
         return None
 
     placed_words = []
     solution = []
-    backwards_target = int(params['word_count'] * params['backwards_ratio'])
-    backwards_used = 0
 
-    for word in base_words:
+    # Sort by length (longer first for better placement)
+    selected_words.sort(key=len, reverse=True)
+
+    # Track used starting positions to avoid overlap
+    used_positions = set()
+
+    # Place words
+    for word in selected_words:
         original_word = word
-        placed_word = word
 
-        # Possibly reverse the word
-        if backwards_used < backwards_target and random.random() < params['backwards_ratio']:
-            placed_word = word[::-1]
-            backwards_used += 1
+        # Decide if we should reverse this word
+        if random.random() < params['backwards_ratio']:
+            word = word[::-1]
 
         placed = False
 
         # Try to place the word
-        for _ in range(attempts):
-            dy, dx = random.choice(dirs)
-            r = random.randint(0, size - 1)
-            c = random.randint(0, size - 1)
+        for _ in range(params['placement_attempts']):
+            # Choose random direction
+            dy, dx = random.choice(directions)
 
-            if can_place_word(grid, placed_word, r, c, dy, dx, size):
-                place_word(grid, placed_word, r, c, dy, dx)
+            # Choose random starting position that fits
+            max_r = size - len(word) if dy >= 0 else size - 1
+            max_c = size - len(word) if dx >= 0 else size - 1
+            min_r = 0 if dy >= 0 else len(word) - 1
+            min_c = 0 if dx >= 0 else len(word) - 1
+
+            if max_r < min_r or max_c < min_c:
+                continue
+
+            r = random.randint(min_r, max_r)
+            c = random.randint(min_c, max_c)
+
+            # Skip positions that might overlap too much
+            if (r, c) in used_positions and random.random() > 0.7:
+                continue
+
+            if can_place_word(grid, word, r, c, dy, dx, size):
+                place_word(grid, word, r, c, dy, dx)
+
+                # Record solution
                 pos = r * size + c
                 dir_idx = ALL_DIRECTIONS.index((dy, dx))
-
                 solution.append(f"{pos};{dir_idx};{len(original_word)};{original_word}")
                 placed_words.append(original_word)
+
+                # Mark this position as used
+                used_positions.add((r, c))
+
                 placed = True
                 break
 
-        # If not placed with random attempts, try systematic placement
         if not placed:
-            # Try all possible positions (within reason)
-            max_systematic = min(100, size * size * len(dirs))
-            for _ in range(max_systematic):
-                dy, dx = random.choice(dirs)
-                r = random.randint(0, size - 1)
-                c = random.randint(0, size - 1)
-
-                if can_place_word(grid, placed_word, r, c, dy, dx, size):
-                    place_word(grid, placed_word, r, c, dy, dx)
-                    pos = r * size + c
-                    dir_idx = ALL_DIRECTIONS.index((dy, dx))
-
-                    solution.append(f"{pos};{dir_idx};{len(original_word)};{original_word}")
-                    placed_words.append(original_word)
-                    placed = True
+            # Try brute force placement
+            for r in range(size):
+                for c in range(size):
+                    for dy, dx in directions:
+                        if can_place_word(grid, word, r, c, dy, dx, size):
+                            place_word(grid, word, r, c, dy, dx)
+                            pos = r * size + c
+                            dir_idx = ALL_DIRECTIONS.index((dy, dx))
+                            solution.append(f"{pos};{dir_idx};{len(original_word)};{original_word}")
+                            placed_words.append(original_word)
+                            used_positions.add((r, c))
+                            placed = True
+                            break
+                    if placed:
+                        break
+                if placed:
                     break
 
     # Check if we placed enough words
     if len(placed_words) < params['min_words_required']:
-        logging.debug(f"Only placed {len(placed_words)} words in {puzzle_id}")
+        logging.debug(f"Only placed {len(placed_words)} words for {puzzle_id}")
         return None
 
-    # Verify solution before filling grid
-    if not verify_solution(grid, solution, size):
-        logging.debug(f"Solution verification failed for {puzzle_id} before filling")
+    # FIXED: Verify solution BEFORE filling grid
+    if not verify_solution_intermediate(grid, solution, size):
+        logging.debug(f"Intermediate solution verification failed for {puzzle_id}")
         return None
 
-    # Fill remaining empty cells with random letters
+    # Fill empty cells with random letters
     letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
     for r in range(size):
         for c in range(size):
             if not grid[r][c]:
                 grid[r][c] = random.choice(letters)
 
-    # Final verification
-    if not verify_solution(grid, solution, size):
-        logging.debug(f"Solution verification failed for {puzzle_id} after filling")
+    # FIXED: Final verification with filled grid
+    if not verify_solution_final(grid, solution, size):
+        logging.debug(f"Final solution verification failed for {puzzle_id}")
         return None
 
-    # Remove any duplicate words (shouldn't happen but just in case)
+    # Remove duplicates from placed_words
     unique_words = []
     seen_words = set()
     for w in placed_words:
         if w not in seen_words:
             seen_words.add(w)
             unique_words.append(w)
+
+    # Final check for similar words
+    if has_similar_words(unique_words):
+        logging.debug(f"Similar words in final puzzle {puzzle_id}")
+        return None
 
     # Flatten grid to string
     flat_grid = ''.join(''.join(row) for row in grid)
@@ -379,54 +395,111 @@ def generate_puzzle(theme: str, size: int, params: Dict,
     }
 
 
-def verify_solution(grid: List[List[str]], solution: List[str], size: int) -> bool:
-    """Verify that all words in the solution can be found in the grid."""
+def verify_solution_intermediate(grid: List[List[str]], solution: List[str], size: int) -> bool:
+    """Verify solution on intermediate grid (before filling with random letters)."""
     try:
         for sol in solution:
+            # Parse solution entry
+            parts = sol.split(';')
+            if len(parts) != 4:
+                logging.debug(f"Invalid solution format: {sol}")
+                return False
+
+            pos_str, dir_idx_str, length_str, original_word = parts
+
+            # Convert to proper types
+            try:
+                start_pos = int(pos_str)
+                dir_idx = int(dir_idx_str)
+                word_length = int(length_str)
+            except ValueError:
+                logging.debug(f"Invalid numeric values in solution: {sol}")
+                return False
+
+            # Validate indices
+            if dir_idx < 0 or dir_idx >= len(ALL_DIRECTIONS):
+                logging.debug(f"Invalid direction index: {dir_idx}")
+                return False
+
+            if word_length != len(original_word):
+                logging.debug(f"Length mismatch: {word_length} vs {len(original_word)}")
+                return False
+
+            # Get direction
+            dy, dx = ALL_DIRECTIONS[dir_idx]
+
+            # Calculate start position
+            start_row = start_pos // size
+            start_col = start_pos % size
+
+            # Check bounds
+            end_row = start_row + (word_length - 1) * dy
+            end_col = start_col + (word_length - 1) * dx
+            if not (0 <= end_row < size and 0 <= end_col < size):
+                logging.debug(f"Word out of bounds: {original_word}")
+                return False
+
+            # Check each letter matches
+            for i in range(word_length):
+                r = start_row + i * dy
+                c = start_col + i * dx
+                if grid[r][c] != original_word[i]:
+                    # Check if it's the reversed version
+                    if grid[r][c] != original_word[word_length - 1 - i]:
+                        logging.debug(f"Letter mismatch at ({r},{c}): {grid[r][c]} != {original_word[i]}")
+                        return False
+
+        return True
+    except Exception as e:
+        logging.debug(f"Error in verify_solution_intermediate: {e}")
+        return False
+
+
+def verify_solution_final(grid: List[List[str]], solution: List[str], size: int) -> bool:
+    """Verify solution on final grid (after filling with random letters)."""
+    try:
+        for sol in solution:
+            # Parse solution entry
             parts = sol.split(';')
             if len(parts) != 4:
                 return False
 
             pos_str, dir_idx_str, length_str, original_word = parts
 
-            # Parse values
+            # Convert to proper types
             try:
-                pos = int(pos_str)
+                start_pos = int(pos_str)
                 dir_idx = int(dir_idx_str)
-                length = int(length_str)
+                word_length = int(length_str)
             except ValueError:
                 return False
 
-            # Check direction index
+            # Validate indices
             if dir_idx < 0 or dir_idx >= len(ALL_DIRECTIONS):
                 return False
 
+            # Get direction
             dy, dx = ALL_DIRECTIONS[dir_idx]
 
             # Calculate start position
-            start_row = pos // size
-            start_col = pos % size
-
-            # Check bounds for entire word
-            end_row = start_row + (length - 1) * dy
-            end_col = start_col + (length - 1) * dx
-            if not (0 <= end_row < size and 0 <= end_col < size):
-                return False
+            start_row = start_pos // size
+            start_col = start_pos % size
 
             # Reconstruct word from grid
             reconstructed = ''
-            for i in range(length):
+            for i in range(word_length):
                 r = start_row + i * dy
                 c = start_col + i * dx
                 reconstructed += grid[r][c]
 
             # Check if it matches original word or its reverse
             if reconstructed != original_word and reconstructed != original_word[::-1]:
+                logging.debug(f"Word mismatch: {reconstructed} != {original_word} or reverse")
                 return False
 
         return True
     except Exception as e:
-        logging.debug(f"Error in verify_solution: {e}")
+        logging.debug(f"Error in verify_solution_final: {e}")
         return False
 
 
@@ -454,24 +527,26 @@ def main():
             file_counter = 1
             puzzles_made = 0
             failed_attempts = 0
-            max_failed_attempts = 200
+            max_failed_attempts = 300
 
             logging.info(f"Generating {PUZZLES_PER_COMBO} puzzles for size={size}, difficulty={diff}")
 
-            # Pre-filter available themes
+            # Find themes with enough words
             available_themes = []
             for theme in themes:
                 words = theme_cache.get(theme, [])
                 if not words:
                     continue
 
-                usable = filter_words(words, params['min_len'], params['max_len'], params['word_count'])
-                if len(usable) >= params['word_count']:
-                    available_themes.append((theme, usable))
+                filtered = filter_words(words, params['min_len'], params['max_len'])
+                if len(filtered) >= params['word_count']:
+                    available_themes.append((theme, filtered))
 
             if not available_themes:
                 logging.error(f"No themes with enough words for {size}-{diff}")
                 continue
+
+            logging.info(f"Found {len(available_themes)} themes for {size}-{diff}")
 
             while puzzles_made < PUZZLES_PER_COMBO and failed_attempts < max_failed_attempts:
                 # Randomly select a theme
@@ -485,24 +560,19 @@ def main():
 
                     if not puzzle:
                         failed_attempts += 1
-                        file_counter += 1  # Increment even on failure
+                        file_counter += 1
 
                         if failed_attempts % 50 == 0:
                             logging.warning(f"{failed_attempts} failed attempts for {size}-{diff}")
                         continue
 
-                    # Additional validation
+                    # Quick validation
                     if len(puzzle['grid']) != size * size:
                         failed_attempts += 1
                         file_counter += 1
                         continue
 
-                    if len(puzzle['wordlist']) != len(set(puzzle['wordlist'])):
-                        failed_attempts += 1
-                        file_counter += 1
-                        continue
-
-                    if len(puzzle['wordlist']) < params['min_words_required']:
+                    if has_similar_words(puzzle['wordlist']):
                         failed_attempts += 1
                         file_counter += 1
                         continue
@@ -514,11 +584,10 @@ def main():
 
                     puzzles_made += 1
                     file_counter += 1
-                    failed_attempts = 0  # Reset on success
+                    failed_attempts = 0
 
                     if puzzles_made % 100 == 0:
                         logging.info(f"  Generated {puzzles_made}/{PUZZLES_PER_COMBO} puzzles")
-                        logging.info(f"  Success rate: {puzzles_made / (puzzles_made + failed_attempts):.1%}")
 
                 except Exception as e:
                     logging.error(f"Error generating puzzle {puzzle_id}: {e}")

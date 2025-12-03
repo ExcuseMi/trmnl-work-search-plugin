@@ -1,1 +1,1 @@
-{"id":"8-hard-1271","theme":"mosque","grid":"BARHIMASMTUASRCQEDJWRPCZFOIIIBEQBLXJYMMCRFACSSARNTHFVATMWFUNTMMG","solution":"62;6;6;MASJID,5;4;6;MIHRAB,55;6;4;IMAM,38;5;5;MECCA","gridSize":8,"difficulty":"hard","wordCount":4,"wordlist":["IMAM","MECCA","MASJID","MIHRAB"]}
+{"id":"8-hard-1271","theme":"glider","grid":"TJQAYGAQKSRVNHGEIPMIKNDDTIYFIIUDELBWLREVFOAGEWRIJTMSOEQHUZJTFCQP","solution":"5;7;6;FLYING,59;3;5;TOWED,17;1;5;PILOT,43;3;5;GLIDE,8;1;4;KITE,14;7;4;WING","gridSize":8,"difficulty":"hard","wordCount":6,"wordlist":["KITE","WING","GLIDE","PILOT","TOWED","FLYING"]}

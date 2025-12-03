@@ -1,1 +1,1 @@
-{"id":"8-medium-1180","theme":"railway","grid":"SVGAUGEPTLMOONRBUGIBUUTTHTYNJGRSRAGXERAHUALTGLIMLPITBKNHPMHLPGSH","solution":"2;0;5;GAUGE,24;2;4;HALT,9;2;4;LINE,22;1;6;TRAINS,32;2;4;RAIL","gridSize":8,"difficulty":"medium","wordCount":5,"wordlist":["HALT","LINE","RAIL","GAUGE","TRAINS"]}
+{"id":"8-medium-1180","theme":"ceramics","grid":"LVJTILESWWTDMAUIQSIOYFQDBKHALDCZOIMAIGFHWLSOPHKJLNMZNESGSEAFWKSY","solution":"17;2;6;SHAPES,3;0;5;TILES,24;1;5;BOWLS,34;3;4;MAYA,25;1;4;KILN","gridSize":8,"difficulty":"medium","wordCount":5,"wordlist":["KILN","MAYA","BOWLS","TILES","SHAPES"]}

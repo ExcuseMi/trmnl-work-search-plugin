@@ -1,1 +1,1 @@
-{"id":"8-hard-3087","theme":"irrigation","grid":"ODITCHZJDMPJXEDFIIIXGRKTAXARISDXRSWPHAYUICGLMBCSDQTSXEZLFUSPLSEQ","solution":"14;7;4;DRIP,30;7;4;DAMS,1;0;5;DITCH,24;1;4;ARID","gridSize":8,"difficulty":"hard","wordCount":4,"wordlist":["ARID","DAMS","DRIP","DITCH"]}
+{"id":"8-hard-3087","theme":"drought","grid":"ORELIEFEDPMONIARMGWXDTXUPYZFSBOYOXARIMYTRBOOFHSNCWTSPURDIDETDOIG","solution":"1;0;6;RELIEF,49;3;5;WORST,27;1;5;FROST,60;3;4;DUST,15;4;4;RAIN,48;5;4;CROP","gridSize":8,"difficulty":"hard","wordCount":6,"wordlist":["CROP","DUST","RAIN","FROST","WORST","RELIEF"]}

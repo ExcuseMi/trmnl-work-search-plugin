@@ -1,1 +1,1 @@
-{"id":"8-hard-2421","theme":"tram","grid":"POTSDLIFKTTNCARRFTOUIYOADSPTYMULSTESASTORODYBKEVWPVCRYSVYSDEEZDR","solution":"42;5;5;DEPOT,0;0;4;STOP,25;1;5;STOPS,14;1;6;ROUTES","gridSize":8,"difficulty":"hard","wordCount":4,"wordlist":["STOP","DEPOT","STOPS","ROUTES"]}
+{"id":"8-hard-2421","theme":"flamingo","grid":"MGIHMSAMCOUBASELAFTGIAOMPMEENGINRVADLBAWIIEJIOCPASNSLYHVWZXBHHMZ","solution":"15;4;5;BASEL,36;6;5;MOTEL,33;3;5;VEGAS,8;1;5;CAPRI,21;7;5;ANDES,51;3;4;IBIS","gridSize":8,"difficulty":"hard","wordCount":6,"wordlist":["IBIS","ANDES","BASEL","CAPRI","MOTEL","VEGAS"]}

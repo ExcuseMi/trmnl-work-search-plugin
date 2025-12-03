@@ -1,1 +1,1 @@
-{"id":"8-hard-688","theme":"ferry","grid":"DXUYDURRDOCKOEFKLLSFILWQMSLPQCHNLAQQFQAGGYUEVPRJQAYGEIFKYPMOOECB","solution":"22;1;5;WHARF,27;3;4;PIER,35;7;4;QUAY,8;0;4;DOCK","gridSize":8,"difficulty":"hard","wordCount":4,"wordlist":["DOCK","PIER","QUAY","WHARF"]}
+{"id":"8-hard-688","theme":"bus","grid":"MARKZYDGEITLAAGSTEPWIJCLRRBSTANDOUOVMARISIRUBATCPCTQTFRSGRCIEEZT","solution":"40;3;6;SUBWAY,25;2;5;ROUTE,0;1;5;METRO,27;0;5;STAND,38;6;4;RAIL,63;6;4;TRAM","gridSize":8,"difficulty":"hard","wordCount":6,"wordlist":["RAIL","TRAM","METRO","ROUTE","STAND","SUBWAY"]}

@@ -1,1 +1,1 @@
-{"id":"8-medium-921","theme":"ship","grid":"INGLVMQRQKJIATURGSANKMODJRSQXOERKECBTWKMXFRFONOZPIATUOINMTPSETWK","solution":"17;0;4;SANK,59;3;4;SUNK,25;1;5;REFIT,51;3;5;TOWED,26;1;5;SCRAP","gridSize":8,"difficulty":"medium","wordCount":5,"wordlist":["SANK","SUNK","REFIT","SCRAP","TOWED"]}
+{"id":"8-medium-921","theme":"sail","grid":"JESIURCCBRRESALIJIZFYSVVQGXJWRTTRGRWLKEQLEHFIEVTJDVRLNWUXMKFPTDJ","solution":"1;0;6;CRUISE,9;1;6;RIGGED,10;0;5;LASER,59;3;5;FLEET,35;2;4;WIND","gridSize":8,"difficulty":"medium","wordCount":5,"wordlist":["WIND","FLEET","LASER","CRUISE","RIGGED"]}

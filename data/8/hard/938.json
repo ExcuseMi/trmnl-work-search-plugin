@@ -1,1 +1,1 @@
-{"id":"8-hard-938","theme":"snake","grid":"RKCTRTGVEISFPAWMTFNFTALCRAAQDVDWAOKDXYSOGKEENHAKTRSKNAOMMJHURABA","solution":"55;4;4;MOAN,21;7;5;ADDER,40;5;6;GARTER,10;1;6;SNAKES","gridSize":8,"difficulty":"hard","wordCount":4,"wordlist":["MOAN","ADDER","GARTER","SNAKES"]}
+{"id":"8-hard-938","theme":"column","grid":"BSXIRTAMPYLIADTCDIUQILHUXQXINELBCROSRASREROAJOODVRLWRUOZFDETSJRI","solution":"21;4;6;LIQUID,7;4;6;MATRIX,22;7;6;HERALD,9;0;5;DAILY,38;7;4;SORT,33;2;4;ROWS","gridSize":8,"difficulty":"hard","wordCount":6,"wordlist":["ROWS","SORT","DAILY","HERALD","LIQUID","MATRIX"]}

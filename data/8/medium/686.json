@@ -1,1 +1,1 @@
-{"id":"8-medium-686","theme":"bus","grid":"EROUTESSBTGZAEESBTKISRPPULSUAOPQYUBFTBYWXSWSTBDCBFTAXISDSAISTNTU","solution":"34;3;5;BUSES,1;0;6;ROUTES,43;3;5;STOPS,35;3;5;FARES,50;0;5;TAXIS","gridSize":8,"difficulty":"medium","wordCount":5,"wordlist":["BUSES","FARES","STOPS","TAXIS","ROUTES"]}
+{"id":"8-medium-686","theme":"bay","grid":"JRGCMCLFCYVXILHLUSRBIAAKBOTNRGFBAELBNIHLJEOEHACRTRBVISGKBMWZMRDB","solution":"49;3;6;HARBOR,50;3;6;BENGAL,48;3;5;INLET,19;2;5;BRICK,8;1;4;CUBA","gridSize":8,"difficulty":"medium","wordCount":5,"wordlist":["CUBA","BRICK","INLET","BENGAL","HARBOR"]}

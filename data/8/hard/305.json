@@ -1,1 +1,1 @@
-{"id":"8-hard-305","theme":"tram","grid":"OCXHSPLNCIBSFTTHWTROTPYLPDTOBORZCOEWUUPMNWTPPTASZJTSOVECIMPXJTKS","solution":"61;6;5;DEPOT,51;6;4;STOP,11;2;5;STOPS,18;2;6;ROUTES","gridSize":8,"difficulty":"hard","wordCount":4,"wordlist":["STOP","DEPOT","STOPS","ROUTES"]}
+{"id":"8-hard-305","theme":"noise","grid":"SONICSKSDUSIGNALSLEVELFKTUPNIDXTERBPUNKAFAVOHXHPBKLGUXYPIVDGGRKV","solution":"21;4;6;LEVELS,10;0;6;SIGNAL,0;0;5;SONIC,28;4;5;INPUT,50;3;4;LOUD,35;0;4;PUNK","gridSize":8,"difficulty":"hard","wordCount":6,"wordlist":["LOUD","PUNK","INPUT","SONIC","LEVELS","SIGNAL"]}
