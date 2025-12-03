@@ -118,10 +118,9 @@
     }
 
     .word-legend {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 15px;
-      justify-content: center;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
       margin-top: 20px;
     }
 
@@ -200,6 +199,10 @@
       .btn {
         padding: 8px 16px;
         font-size: 14px;
+      }
+
+      .word-legend {
+        grid-template-columns: 1fr;
       }
     }
   </style>
@@ -322,13 +325,35 @@
           }
         });
 
-        const words = solution.map(s => s.word);
+        // Get words in the same order as wordlist from the puzzle
+        const wordlist = puzzle.wordlist || [];
+        const solutionMap = {};
+
+        // Create a map of word to solution entry
+        solution.forEach(sol => {
+          solutionMap[sol.word] = sol;
+        });
+
+        // Reorder solution to match wordlist order
+        const orderedSolution = [];
+        const orderedWords = [];
+
+        wordlist.forEach(word => {
+          if (solutionMap[word]) {
+            orderedSolution.push(solutionMap[word]);
+            orderedWords.push(word);
+          }
+        });
+
+        // If wordlist is empty or doesn't match, fall back to solution order
+        const finalSolution = orderedSolution.length > 0 ? orderedSolution : solution;
+        const finalWords = orderedWords.length > 0 ? orderedWords : solution.map(s => s.word);
 
         puzzleData = {
           theme: puzzle.theme,
           grid: grid,
-          words: words,
-          solution: solution,
+          words: finalWords,
+          solution: finalSolution,
           gridSize: puzzle.gridSize
         };
 
@@ -361,14 +386,14 @@
 
       html += '</table></div>';
 
-      // Add word legend
+      // Add word legend in 2-column grid, using words array order
       html += '<div class="word-legend" id="word-legend">';
-      solution.forEach((sol, idx) => {
+      words.forEach((word, idx) => {
         const color = colors[idx % colors.length];
         html += `
           <div class="word-item" data-word-index="${idx}" onclick="revealWord(${idx})">
             <div class="color-box" style="background: ${color}"></div>
-            <span>${sol.word}</span>
+            <span>${word}</span>
           </div>
         `;
       });
