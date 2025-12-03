@@ -14,6 +14,7 @@ custom_fields:
   field_type: author_bio
   description: Solve <strong>Word Search</strong>es directly on your TRMNL!<br /><br /> Get stuck on a tricky word search puzzle?<br />Simply scan the QR code to reveal the solution!
   github_url: https://github.com/ExcuseMi/trmnl-word-search-plugin
+  category: games
 - keyname: difficulty
   field_type: select
   name: Difficulty
@@ -27,7 +28,7 @@ custom_fields:
 - keyname: size
   field_type: select
   name: Size
-  description: Size of the grid
+  description: Size of the grid<br />On smaller views, an 8x8 puzzle will be shown on small to medium screens to ensure readability.
   options:
   - 8X8: '8'
   - 10x10: '10'
@@ -35,13 +36,12 @@ custom_fields:
   - 15x15: '15'
   default: '10'
   optional: true
-- keyname: use_8
+- keyname: show_solution
   field_type: select
-  name: Use 8x8 for smaller views
-  description: 8x8 grids will be used to display on smaller views. Recommend for TRMNL OG.
+  name: Show solution QR Code
   options:
   - 'Yes': 'yes'
-  - 'no': 'no'
+  - 'No': 'no'
   default: 'yes'
   optional: true
 name: Word Search

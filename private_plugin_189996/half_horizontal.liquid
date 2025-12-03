@@ -1,2 +1,9 @@
-{% render "puzzle", puzzle: small_puzzle, trmnl:trmnl, stretch: ' h--full', wordlist_layout: 'row', 
+{% liquid
+if trmnl.device.height <= 480
+assign puzzle = IDX_1
+else
+assign puzzle = IDX_0
+endif
+%}
+{% render "puzzle", puzzle: puzzle, trmnl:trmnl, stretch: ' h--full', wordlist_layout: 'row', 
 show_words:true, show_qr:true, horizontal: true %}

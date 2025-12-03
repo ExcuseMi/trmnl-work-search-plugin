@@ -1,6 +1,13 @@
+{% liquid
+if trmnl.device.height <= 480
+assign puzzle = IDX_1
+else
+assign puzzle = IDX_0
+endif
+%}
 <style>
   .half {
     width: 50%;
   }
 </style>
-{% render "puzzle", puzzle: small_puzzle, trmnl:trmnl, stretch: ' w--52 lg:w--80', show_qr:true, show_words:true, vertical: true, wordlist_layout: "row" %}
+{% render "puzzle", puzzle: puzzle, trmnl:trmnl, stretch: ' w--52 lg:w--80', show_qr:true, show_words:true, vertical: true, wordlist_layout: "row" %}

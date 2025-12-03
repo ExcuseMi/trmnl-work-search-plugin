@@ -6,10 +6,14 @@ else
   assign show_qr = true
   assign show_words = false
 endif
-
+if trmnl.device.height <= 480
+assign puzzle = IDX_1
+else
+assign puzzle = IDX_0
+endif
 %}
 
-{% render "puzzle", puzzle: small_puzzle, trmnl:trmnl, stretch: ' h--full', show_qr:show_qr, 
+{% render "puzzle", puzzle: puzzle, trmnl:trmnl, stretch: ' h--full', show_qr:show_qr, 
 show_words:show_words %}
 
 <script>
