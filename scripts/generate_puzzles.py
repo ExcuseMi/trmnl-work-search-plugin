@@ -166,6 +166,10 @@ def generate_puzzle(theme, grid_size, difficulty_params, available_words, puzzle
         pos = s['start'][0] * grid_size + s['start'][1]
         dir_idx = dir_map[tuple(s['direction'])]
         encoded.append(f"{pos};{dir_idx};{s['length']}")
+    sorted_words = sorted(
+        wordlist,
+        key=lambda word: (len(word), word.lower())
+    )
 
     return {
         'id': puzzle_id,  # Add the ID
@@ -175,7 +179,7 @@ def generate_puzzle(theme, grid_size, difficulty_params, available_words, puzzle
         'gridSize': grid_size,
         'difficulty': difficulty_params.get('difficulty_label', ''),
         'wordCount': len(solution),
-        'wordlist': wordlist  # Add the wordlist
+        'wordlist': sorted_words
     }
 
 
