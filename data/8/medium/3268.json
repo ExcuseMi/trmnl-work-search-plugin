@@ -1,1 +1,1 @@
-{"id":"8-medium-3268","theme":"bus","grid":"CTNVLDTMFIYIOOPKPHAXPOEUYRWETRBNSBDSASTBTEHFXMVAQDZKIPSFRNLLXJAA","solution":"43;3;4;FARE,35;3;4;STOP,34;3;5;DEPOT,25;3;4;RAIL,28;1;4;TAXI","gridSize":8,"difficulty":"medium","wordCount":5,"wordlist":["FARE","RAIL","STOP","TAXI","DEPOT"]}
+{"id":"8-medium-3268","theme":"smile","grid":"UDSMILEYQFCLZLGMCSRLAJOGJMFOEUTDHIDVWFGRULUDWNTHBESWQKOSWSLWUEKF","solution":"9;2;5;FROWN,10;2;5;CLEFT,2;0;6;SMILEY,17;1;6;SMILES,11;2;5;LAUGH","gridSize":8,"difficulty":"medium","wordCount":5,"wordlist":["CLEFT","FROWN","LAUGH","SMILES","SMILEY"]}

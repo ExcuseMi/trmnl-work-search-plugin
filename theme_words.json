@@ -2777,8 +2777,34 @@
     "SYDNEY",
     "HEAT"
   ],
-  "spring": [],
-  "autumn": [],
+  "spring": [
+    "AUTUMN",
+    "SEMESTER",
+    "EXAM",
+    "SUMMER",
+    "FALL",
+    "SPRINGS",
+    "GROVE",
+    "TRAINING",
+    "OFFENSIVE",
+    "WINTER",
+    "FLOWERS",
+    "SUSPENSION",
+    "CREEK"
+  ],
+  "autumn": [
+    "ANNALS",
+    "WINTER",
+    "SPRING",
+    "HARVEST",
+    "STAKES",
+    "MILD",
+    "RAINFALL",
+    "FLOWERS",
+    "LEAVES",
+    "WARM",
+    "LEAF"
+  ],
   "season": [
     "OPENER",
     "FINALE",
@@ -6514,7 +6540,16 @@
     "PORTLAND",
     "DALLAS"
   ],
-  "griffin": [],
+  "griffin": [
+    "DUNNE",
+    "LOIS",
+    "CANBERRA",
+    "GUY",
+    "GEORGIA",
+    "POETRY",
+    "BRIAN",
+    "JOHNNY"
+  ],
   "mermaid": [
     "BARNACLE",
     "ASHMAN",
@@ -7652,7 +7687,26 @@
     "SYMBOL",
     "STORY"
   ],
-  "hero": [],
+  "hero": [
+    "SMO",
+    "HEROINE",
+    "LENIN",
+    "VILLAIN",
+    "HONDA",
+    "HEROES",
+    "EPIC",
+    "SOVIET",
+    "MARVEL",
+    "QUEST",
+    "WARRIOR",
+    "SOCIALIST",
+    "GUITAR",
+    "COMICS",
+    "SWORD",
+    "ADVENTURES",
+    "TALES",
+    "EVIL"
+  ],
   "villain": [
     "VILLAINOUS",
     "JOKER",
@@ -9523,7 +9577,14 @@
     "CUISINE",
     "FLOUR"
   ],
-  "icecream": [],
+  "icecream": [
+    "HANDS",
+    "CREAM",
+    "ICE",
+    "VAN",
+    "RELEASED",
+    "BAND"
+  ],
   "candy": [
     "CANDIES",
     "CANES",
@@ -9990,7 +10051,15 @@
     "MAINSTREAM",
     "CHORUS"
   ],
-  "country": [],
+  "country": [
+    "SOFTBALL",
+    "CHARTS",
+    "CHART",
+    "GOLF",
+    "NASHVILLE",
+    "VOLLEYBALL",
+    "SINGLES"
+  ],
   "electronic": [
     "COUNTERMEASURES",
     "TECHNO",
@@ -11371,7 +11440,25 @@
     "RECREATIONAL",
     "RECREATION"
   ],
-  "running": [],
+  "running": [
+    "GAG",
+    "MATE",
+    "BACKS",
+    "RUSHING",
+    "MARATHON",
+    "RUSHED",
+    "TOUCHDOWN",
+    "INCUMBENT",
+    "YARDS",
+    "PARALLEL",
+    "QUARTERBACK",
+    "RECEIVER",
+    "BACK",
+    "TICKET",
+    "STAKES",
+    "CARRIES",
+    "TRAINS"
+  ],
   "swimming": [
     "SWUM",
     "BREASTSTROKE",
@@ -15987,7 +16074,26 @@
     "DISCUSSED",
     "HERITAGE"
   ],
-  "report": [],
+  "report": [
+    "RECOMMENDATIONS",
+    "RECOMMENDED",
+    "FINDINGS",
+    "CONCLUDED",
+    "RATED",
+    "INQUIRY",
+    "SUBMITTED",
+    "ALLEGATIONS",
+    "REPORTS",
+    "STATED",
+    "INVESTIGATION",
+    "ABUSE",
+    "INDICATED",
+    "PREPARED",
+    "RANKED",
+    "REPORTING",
+    "COMMISSION",
+    "QUALIFIED"
+  ],
   "script": [
     "CURSIVE",
     "CYRILLIC",
@@ -16035,7 +16141,17 @@
     "STORY",
     "WARNER"
   ],
-  "play": [],
+  "play": [
+    "PLAYWRIGHT",
+    "STAGED",
+    "TIE",
+    "ROLE",
+    "BROADWAY",
+    "THEATRE",
+    "MISSED",
+    "MATCHES",
+    "TOUCHDOWN"
+  ],
   "screenplay": [
     "CINEMATOGRAPHY",
     "BAFTA",
@@ -16088,7 +16204,27 @@
     "PRODUCERS",
     "CINEMA"
   ],
-  "dialogue": [],
+  "dialogue": [
+    "SOCRATES",
+    "PLATO",
+    "RECONCILIATION",
+    "CONVERSATION",
+    "COOPERATION",
+    "ACTORS",
+    "SCENES",
+    "FORUM",
+    "CHARACTERS",
+    "SCRIPT",
+    "CULTURES",
+    "SPOKEN",
+    "PLOT",
+    "NARRATIVE",
+    "UNDERSTANDING",
+    "MUTUAL",
+    "DISCUSSION",
+    "DELIVERY",
+    "CONCERNING"
+  ],
   "character": [
     "PORTRAYED",
     "SOAP",
@@ -16158,7 +16294,21 @@
     "SCENES",
     "EPISODE"
   ],
-  "setting": [],
+  "setting": [
+    "PRECEPT",
+    "REALMS",
+    "SCRUTINY",
+    "FORGOTTEN",
+    "SETTINGS",
+    "FASTEST",
+    "ASIDE",
+    "LAP",
+    "FANTASY",
+    "RECORD",
+    "FORTH",
+    "FICTIONAL",
+    "TONE"
+  ],
   "theme": [
     "TUNE",
     "ANIME",
@@ -17566,7 +17716,23 @@
     "VEGETATION",
     "POLLUTION"
   ],
-  "environment": [],
+  "environment": [
+    "BIODIVERSITY",
+    "SUSTAINABILITY",
+    "ENVIRONMENTAL",
+    "SUSTAINABLE",
+    "POLLUTION",
+    "CONSERVATION",
+    "ECOLOGICAL",
+    "ORGANISMS",
+    "RESOURCES",
+    "WASTE",
+    "CLIMATE",
+    "AGENCY",
+    "PROTECTION",
+    "WILDLIFE",
+    "VIRTUAL"
+  ],
   "conservation": [
     "EASEMENT",
     "CCC",
@@ -17756,7 +17922,22 @@
     "ALASKA",
     "ADVENTURE"
   ],
-  "journey": [],
+  "journey": [
+    "JOURNEYS",
+    "VOYAGE",
+    "MINUTES",
+    "TRAVELLING",
+    "TRAVELS",
+    "TRIP",
+    "DESTINATION",
+    "MYSTERY",
+    "DISCOVER",
+    "TRAIN",
+    "ADVENTURE",
+    "EXPEDITION",
+    "HOURS",
+    "TRAVELLED"
+  ],
   "voyage": [
     "BEAGLE",
     "CIRCUMNAVIGATION",
@@ -18909,7 +19090,22 @@
     "STORY",
     "BEAUTIFUL"
   ],
-  "friendship": [],
+  "friendship": [
+    "MUTUAL",
+    "COOPERATION",
+    "LOYALTY",
+    "ROMANTIC",
+    "CORRESPONDENCE",
+    "ROMANCE",
+    "TREATY",
+    "RELATIONSHIP",
+    "FEELINGS",
+    "PEOPLES",
+    "LASTED",
+    "FRIENDS",
+    "RELATIONSHIPS",
+    "LOVE"
+  ],
   "family": [
     "CAPITA",
     "WINGSPAN",
@@ -18992,8 +19188,40 @@
     "FILM",
     "RELATIONSHIP"
   ],
-  "passion": [],
-  "joy": [],
+  "passion": [
+    "ORATORIO",
+    "CHRIST",
+    "BACH",
+    "RESURRECTION",
+    "JESUS",
+    "PIT",
+    "FRUIT",
+    "EASTER",
+    "PHOTOGRAPHY",
+    "COMMITMENT",
+    "DESIRE",
+    "FLOWER",
+    "COOKING",
+    "GOSPEL",
+    "MATTHEW",
+    "SINGING",
+    "LOVE"
+  ],
+  "joy": [
+    "SORROW",
+    "SADNESS",
+    "HAPPINESS",
+    "LUCK",
+    "PLEASURE",
+    "CURTIS",
+    "COOKING",
+    "RIDE",
+    "PAIN",
+    "GOSPEL",
+    "CHRISTMAS",
+    "HAPPY",
+    "IAN"
+  ],
   "happiness": [
     "SADNESS",
     "MISERY",
@@ -19578,7 +19806,21 @@
     "MERIT",
     "SERGEANT"
   ],
-  "determination": [],
+  "determination": [
+    "COURAGE",
+    "LONGITUDE",
+    "SUCCEED",
+    "PARAMETERS",
+    "MEASUREMENTS",
+    "MEASUREMENT",
+    "WHETHER",
+    "MOLECULAR",
+    "PROTEIN",
+    "SEX",
+    "PROTEINS",
+    "SAMPLE",
+    "DETERMINE"
+  ],
   "perseverance": [
     "PERSEVERE",
     "SPORTSMANSHIP",
@@ -21998,7 +22240,26 @@
     "CREATIVE",
     "FOLK"
   ],
-  "pattern": [],
+  "pattern": [
+    "BRAILLE",
+    "CAMOUFLAGE",
+    "PATTERNS",
+    "DOTS",
+    "MATCHING",
+    "STRIPES",
+    "ALTERNATING",
+    "RECOGNITION",
+    "SPOTS",
+    "REPEATED",
+    "PALE",
+    "UNIFORM",
+    "VARIATION",
+    "COLOUR",
+    "RHYTHM",
+    "VERTICAL",
+    "EVOLUTION",
+    "DARK"
+  ],
   "stripes": [
     "STRIPE",
     "SLEEVES",
@@ -22416,7 +22677,12 @@
     "SOLAR",
     "FLOW"
   ],
-  "history": [],
+  "history": [
+    "POMERANIA",
+    "GEOGRAPHY",
+    "PHILOSOPHY",
+    "MUSEUM"
+  ],
   "ancient": [
     "GREEKS",
     "EGYPTIAN",
@@ -22521,7 +22787,19 @@
     "CENTURY",
     "ARCHITECTURE"
   ],
-  "modern": [],
+  "modern": [
+    "PENTATHLON",
+    "PREFECTURE",
+    "SCHOLARS",
+    "HEBREW",
+    "WANG",
+    "ART",
+    "ERA",
+    "WARFARE",
+    "USAGE",
+    "LANGUAGES",
+    "ARABIC"
+  ],
   "prehistoric": [
     "BONY",
     "STILT",
@@ -26062,7 +26340,27 @@
     "RECEPTION",
     "THEATER"
   ],
-  "hall": [],
+  "hall": [
+    "FAME",
+    "INDUCTEE",
+    "INDUCTED",
+    "INDUCTION",
+    "AUDITORIUM",
+    "DINING",
+    "ROOMS",
+    "RESIDENCE",
+    "VENUE",
+    "DEMOLISHED",
+    "KITCHEN",
+    "MANOR",
+    "CONCERT",
+    "CAMPUS",
+    "SYMPHONY",
+    "BUILDING",
+    "ORCHESTRA",
+    "FLOOR",
+    "HONOR"
+  ],
   "horror": [
     "TREEHOUSE",
     "SLASHER",
@@ -26153,7 +26451,20 @@
     "HUNTING",
     "NEVADA"
   ],
-  "spirit": [],
+  "spirit": [
+    "BAPTISM",
+    "SPIRITS",
+    "GOD",
+    "HOLY",
+    "DIVINE",
+    "GHOST",
+    "SPIRITUAL",
+    "CHRIST",
+    "JESUS",
+    "SOUL",
+    "EVIL",
+    "GOSPEL"
+  ],
   "phantom": [
     "TOLLBOOTH",
     "IIS",
@@ -28293,7 +28604,17 @@
     "HEARD",
     "QUANTUM"
   ],
-  "silence": [],
+  "silence": [
+    "SILENT",
+    "PRAYER",
+    "VOICES",
+    "VICTIMS",
+    "NOISE",
+    "SOUNDS",
+    "OBSERVED",
+    "SPEAK",
+    "HIDDEN"
+  ],
   "echo": [
     "SOUNDER",
     "ASDIC",
@@ -29612,7 +29933,16 @@
     "RIVER",
     "RIVERS"
   ],
-  "current": [],
+  "current": [
+    "VOLTAGE",
+    "ALIGNMENT",
+    "HOLDER",
+    "TERMINUS",
+    "AFFAIRS",
+    "MAGNETIC",
+    "LOCATION",
+    "CEO"
+  ],
   "tide": [
     "BAMA",
     "EBB",
@@ -31667,7 +31997,27 @@
     "DEGREES",
     "STOP"
   ],
-  "sunstroke": [],
+  "sunstroke": [
+    "EXHAUSTION",
+    "MOLDOVA",
+    "CASUALTIES",
+    "HEAT",
+    "CONTEST",
+    "DANISH",
+    "PROJECT",
+    "SUFFERED",
+    "BURIED",
+    "RUSSIAN",
+    "CAPTAIN",
+    "DEAD",
+    "SONG",
+    "NEVER",
+    "DIED",
+    "MUSICAL",
+    "BATTLE",
+    "DIRECTED",
+    "RETURNED"
+  ],
   "dehydration": [
     "HYPOVOLEMIA",
     "HYPONATREMIA",

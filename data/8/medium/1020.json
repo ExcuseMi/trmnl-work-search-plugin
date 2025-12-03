@@ -1,1 +1,1 @@
-{"id":"8-medium-1020","theme":"weather","grid":"CTTIFRCWRLHPCFXHRAOTOVVJRCIULIQVRAFNDAZTNYDNSYMRWCIANPRMXWWURPDB","solution":"8;2;5;RAINS,0;2;5;CLOUD,24;2;5;RADAR,57;3;4;WIND,12;1;4;COLD","gridSize":8,"difficulty":"medium","wordCount":5,"wordlist":["COLD","WIND","CLOUD","RADAR","RAINS"]}
+{"id":"8-medium-1020","theme":"arctic","grid":"LOCRNWWGDCHARQQCBPFBZAGTIEOZRSITUARDPUYEVVNINJYRPULINQMNTYCTMGMT","solution":"56;3;6;TUNDRA,31;1;4;TERN,9;0;4;CHAR,51;3;5;INUIT,16;2;6;BERING","gridSize":8,"difficulty":"medium","wordCount":5,"wordlist":["CHAR","TERN","INUIT","BERING","TUNDRA"]}

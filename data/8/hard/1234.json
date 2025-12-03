@@ -1,1 +1,1 @@
-{"id":"8-hard-1234","theme":"surface","grid":"MTUPUAEIOVEQANVTUPEXBOELXFHWTNNSERTFSUBDPYTIVARGSMOOTHLEDNCSLMKO","solution":"1;2;7;TEXTURE,47;4;7;GRAVITY,57;3;7;TENSION,48;0;6;SMOOTH","gridSize":8,"difficulty":"hard","wordCount":4,"wordlist":["SMOOTH","GRAVITY","TENSION","TEXTURE"]}
+{"id":"8-hard-1234","theme":"geometry","grid":"EWTILINGENSFJMFPNNAAAQACINVXBEZGFNRITZHVFAJONSVSAUGMXZYATMVSHYMS","solution":"2;0;6;TILING,8;1;6;AFFINE,19;1;6;AXIOMS,47;6;5;SHEAF","gridSize":8,"difficulty":"hard","wordCount":4,"wordlist":["SHEAF","AFFINE","AXIOMS","TILING"]}

@@ -1,1 +1,1 @@
-{"id":"8-medium-617","theme":"tunnel","grid":"HMOEYKCGSESPCHZPIIXHENQIWVNIANZTCJGPTFESUVXPFUTDWWAGHABTRZZZRYTE","solution":"10;2;5;SHAFT,60;3;4;RATS,9;2;4;EXIT,2;2;6;OPENED,36;2;4;TUBE","gridSize":8,"difficulty":"medium","wordCount":5,"wordlist":["EXIT","RATS","TUBE","SHAFT","OPENED"]}
+{"id":"8-medium-617","theme":"artificial","grid":"JNYLNNYOJESWUCRPUUDGRASSLRWTNGKOIATURFUSMLREEFHTBHBRKOVGSIAGZXOY","solution":"34;0;4;TURF,1;1;6;NEURAL,42;0;4;REEF,24;1;5;LIMBS,19;0;5;GRASS","gridSize":8,"difficulty":"medium","wordCount":5,"wordlist":["REEF","TURF","GRASS","LIMBS","NEURAL"]}

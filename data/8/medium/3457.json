@@ -1,1 +1,1 @@
-{"id":"8-medium-3457","theme":"canal","grid":"YJDMYKTOUMOKISGWHZCVFDWVPOKRGBITLEAECWODXHNKAQEVWOJQZPMLZNTUHUUI","solution":"56;3;4;ZONE,48;3;5;WHARF,32;3;4;LOCK,2;1;4;DOCK,3;2;4;MIDI","gridSize":8,"difficulty":"medium","wordCount":5,"wordlist":["DOCK","LOCK","MIDI","ZONE","WHARF"]}
+{"id":"8-medium-3457","theme":"navigation","grid":"AGRADARSDUKCGPKIERCPACLBBEACONMMDOQLKLAPWSLCSLSLQBOWVBBLMLDLKVYE","solution":"35;3;5;LOCKS,57;3;4;LOCK,2;0;5;RADAR,11;2;5;CANAL,24;0;6;BEACON","gridSize":8,"difficulty":"medium","wordCount":5,"wordlist":["LOCK","CANAL","LOCKS","RADAR","BEACON"]}

@@ -1,1 +1,1 @@
-{"id":"8-hard-2847","theme":"orca","grid":"EYRVOYYGNRELFXNQIENHUILMHNITWFJZPNAOFVEMLARKTCYJOCTDQZDZDHVUKXUC","solution":"50;5;7;TRAINER,49;5;7;CANNERY,56;5;7;DOLPHIN,42;3;6;ROWING","gridSize":8,"difficulty":"hard","wordCount":4,"wordlist":["ROWING","CANNERY","DOLPHIN","TRAINER"]}
+{"id":"8-hard-2847","theme":"database","grid":"UJKQTEWBTONDLAUXRXCCMZCPTCAEOQSQARHQKBMUOCSMUMBESXMKEXDRYSVKNUHY","solution":"54;5;4;DBMS,48;3;6;SCHEMA,31;1;5;QUERY,40;3;6;ORACLE","gridSize":8,"difficulty":"hard","wordCount":4,"wordlist":["DBMS","QUERY","ORACLE","SCHEMA"]}

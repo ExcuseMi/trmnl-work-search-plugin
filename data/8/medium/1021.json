@@ -1,1 +1,1 @@
-{"id":"8-medium-1021","theme":"cards","grid":"OFCMBBGOECQLZKOAPDIFKRRYTLIODPZTXRACSWLEZEUYEALBSNDMEIECTVWDPRCJ","solution":"16;2;6;PLAYER,24;2;5;TRUMP,60;3;4;PILE,59;3;5;DEALT,17;2;4;DICE","gridSize":8,"difficulty":"medium","wordCount":5,"wordlist":["DICE","PILE","DEALT","TRUMP","PLAYER"]}
+{"id":"8-medium-1021","theme":"delta","grid":"AXJKAPPAMZBDDLZDKESIGMAGPTNWTDYAYADAHNMMEONLETIMQGRQTHSAUZRAACYU","solution":"28;1;5;THETA,3;0;5;KAPPA,18;0;5;SIGMA,9;1;4;ZETA,23;1;5;GAMMA","gridSize":8,"difficulty":"medium","wordCount":5,"wordlist":["ZETA","GAMMA","KAPPA","SIGMA","THETA"]}

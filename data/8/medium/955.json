@@ -1,1 +1,1 @@
-{"id":"8-medium-955","theme":"bus","grid":"RTDXCJSGMOGTULTADKUASPKEKEWTRTROCFPCEAOWROKOFSGPHLPWTYLEAGCPKGEW","solution":"10;2;6;GARAGE,44;3;4;FARE,0;2;6;ROUTES,20;2;4;STOP,16;2;5;DEPOT","gridSize":8,"difficulty":"medium","wordCount":5,"wordlist":["FARE","STOP","DEPOT","GARAGE","ROUTES"]}
+{"id":"8-medium-955","theme":"ferry","grid":"DDOCKSRKWGAWHARFDPCJVMELOITSKQPLCETQMUSMKRTBKAYLZQVVYYOKTGNGOIRL","solution":"11;0;5;WHARF,17;1;4;PIER,29;1;4;QUAY,16;1;4;DOCK,1;0;5;DOCKS","gridSize":8,"difficulty":"medium","wordCount":5,"wordlist":["DOCK","PIER","QUAY","DOCKS","WHARF"]}

@@ -1,1 +1,1 @@
-{"id":"8-hard-3322","theme":"train","grid":"ZBQQTMTJQVHLHYSZALWSGAEHKZSRIWRCUTIEELACASFDRIEWMPYIFANJOSMRFRZY","solution":"54;5;7;NEAREST,61;5;7;RAILWAY,52;5;7;FREIGHT,59;5;6;RIDERS","gridSize":8,"difficulty":"hard","wordCount":4,"wordlist":["RIDERS","FREIGHT","NEAREST","RAILWAY"]}
+{"id":"8-hard-3322","theme":"building","grid":"DIPRFSMEEHGEACNKSEJNUEYCUTDEJDVIOXMAVDLRHHSECWHBFOORZAZHRGXBROFS","solution":"62;6;6;FACADE,47;5;5;BRICK,40;5;6;HOUSED,51;4;4;ROOF","gridSize":8,"difficulty":"hard","wordCount":4,"wordlist":["ROOF","BRICK","FACADE","HOUSED"]}

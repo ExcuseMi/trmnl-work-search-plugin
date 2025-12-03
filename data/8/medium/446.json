@@ -1,1 +1,1 @@
-{"id":"8-medium-446","theme":"cards","grid":"BENCPDVSDAPVAIIWFLBLPSLWDZTZAAHEUUEVRYCDSTMYKIEKNHCUDECRBMDCHGMA","solution":"4;2;4;PILE,52;3;4;DICE,3;2;4;CASH,10;2;6;PLAYER,20;2;4;PACK","gridSize":8,"difficulty":"medium","wordCount":5,"wordlist":["CASH","DICE","PACK","PILE","PLAYER"]}
+{"id":"8-medium-446","theme":"algorithm","grid":"CIPHERKXGWVERTEXGNQHNDTPFIGIARZVHLGRNSPMNTRIAPHLXWDGLPUDXRQZSQHT","solution":"19;2;4;HASH,26;2;5;GRAPH,10;0;6;VERTEX,0;0;6;CIPHER,27;2;5;INPUT","gridSize":8,"difficulty":"medium","wordCount":5,"wordlist":["HASH","GRAPH","INPUT","CIPHER","VERTEX"]}

@@ -1,1 +1,1 @@
-{"id":"8-medium-2209","theme":"rainbow","grid":"RBALAHPSUYKTLQFIPOBTBAPEQRXLKEKTFUIJAAVEQIEDNGRAWJSSEJTBDYDHTJPF","solution":"24;2;5;QUEST,32;2;4;FISH,16;2;5;PRIDE,51;3;5;SNAKE,12;2;4;LAKE","gridSize":8,"difficulty":"medium","wordCount":5,"wordlist":["FISH","LAKE","PRIDE","QUEST","SNAKE"]}
+{"id":"8-medium-2209","theme":"cards","grid":"DECKSCJWDNTJNWFEEXTRUMPSBTAAKKHWINRRNXDLTCOWDRNVJETWAIEQWIHCQIZP","solution":"18;0;6;TRUMPS,18;1;5;TAROT,8;1;5;DEBIT,59;3;4;CARD,0;0;5;DECKS","gridSize":8,"difficulty":"medium","wordCount":5,"wordlist":["CARD","DEBIT","DECKS","TAROT","TRUMPS"]}
