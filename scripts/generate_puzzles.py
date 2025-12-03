@@ -143,57 +143,77 @@ def update_theme_cache(themes: List[str]) -> Dict[str, List[str]]:
 def get_difficulty_params(difficulty: str, grid_size: int) -> Dict:
     """Get parameters for a specific difficulty level."""
     if difficulty == "easy":
+        # Easy: Simple, clean puzzles
+        word_count = min(grid_size, 8)  # Max 8 words even for 15x15
         return {
             'difficulty_label': 'easy',
-            'directions': [(0, 1), (1, 0)],  # Right, Down
+            'directions': [(0, 1), (1, 0)],  # Only Right and Down
             'backwards_ratio': 0.0,
-            'word_count': min(grid_size, 10),  # Cap at 10 for easier generation
+            'word_count': word_count,
             'min_len': 4,
-            'max_len': min(8, grid_size - 1),
-            'placement_attempts': 200,
-            'overlap_min': 0,  # Minimum required overlaps
-            'overlap_max': 2,  # Maximum allowed overlaps per word
-            'density_target': 0.3,  # Target percentage of grid used by words
-            'min_words_required': 3
+            'max_len': min(6, grid_size - 2),  # Shorter max length
+            'placement_attempts': 150,
+            'overlap_min': 0,
+            'overlap_max': 1,  # Very little overlap
+            'density_target': 0.25,  # Low density
+            'min_words_required': max(3, word_count * 0.8)  # Must place most words
         }
+
     elif difficulty == "medium":
+        # Medium: Moderate challenge, good mix
+        # Scale word count with grid size: ~65% of grid size
+        word_count = int(grid_size * 0.65)
+        if grid_size == 15:
+            word_count = 9  # 15 * 0.65 ≈ 9.75, round to 9
+        elif grid_size == 12:
+            word_count = 8  # 12 * 0.65 ≈ 7.8, round to 8
+        elif grid_size == 10:
+            word_count = 6  # 10 * 0.65 = 6.5, round to 6
+        else:  # 8x8
+            word_count = 5  # 8 * 0.65 ≈ 5.2, round to 5
+
         return {
             'difficulty_label': 'medium',
             'directions': [(0, 1), (1, 0), (1, 1), (-1, 1)],  # 4 directions
-            'backwards_ratio': 0.10,
-            'word_count': min(grid_size, 12),  # Cap at 12
+            'backwards_ratio': 0.08,  # Reduced from 0.10
+            'word_count': word_count,
             'min_len': 4,
-            'max_len': min(10, grid_size - 1),
-            'placement_attempts': 300,
-            'overlap_min': 0,  # Reduced from 1
-            'overlap_max': 3,
-            'density_target': 0.4,  # Reduced from 0.45
-            'min_words_required': max(4, grid_size * 0.5)
+            'max_len': min(8, grid_size - 2),  # Reasonable max length
+            'placement_attempts': 250,
+            'overlap_min': 0,
+            'overlap_max': 2,  # Moderate overlap
+            'density_target': 0.35,  # Moderate density
+            'min_words_required': max(4, word_count * 0.75)
         }
+
     else:  # hard
-        # Special handling for 15x15 hard puzzles
-        word_count = grid_size
+        # Hard: Maximum challenge but still playable
+        # Scale word count: ~50% of grid size for hard (fewer but longer words)
         if grid_size == 15:
-            word_count = 12  # Reduce word count for 15x15 hard
+            word_count = 7  # Fewer words, but 8 directions + backwards
+            max_len = 11
         elif grid_size == 12:
-            word_count = 10
-        elif grid_size == 10:
-            word_count = 8
-        else:  # 8x8
             word_count = 6
+            max_len = 9
+        elif grid_size == 10:
+            word_count = 5
+            max_len = 8
+        else:  # 8x8
+            word_count = 4
+            max_len = 7
 
         return {
             'difficulty_label': 'hard',
             'directions': ALL_DIRECTIONS,  # All 8 directions
-            'backwards_ratio': 0.30,  # Reduced from 0.40
+            'backwards_ratio': 0.25,  # Reduced from 0.30
             'word_count': word_count,
-            'min_len': 3,
-            'max_len': min(10, grid_size - 1),  # Reduced from 12
-            'placement_attempts': 500,  # Increased attempts
-            'overlap_min': 0,  # Reduced from 2
-            'overlap_max': 4,  # Reduced from 5
-            'density_target': 0.5,  # Reduced from 0.6
-            'min_words_required': max(5, word_count * 0.7)
+            'min_len': 4,  # Increased from 3 for better words
+            'max_len': max_len,
+            'placement_attempts': 400,  # Balance between attempts and quality
+            'overlap_min': 0,
+            'overlap_max': 3,  # Allow some overlap but not too much
+            'density_target': 0.45,  # Good density but not overcrowded
+            'min_words_required': max(3, word_count * 0.7)
         }
 
 # ------------------------------------------------------------
