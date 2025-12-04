@@ -2,16 +2,22 @@
 <!-- PLUGIN_STATS_START -->
 ## 🚀 TRMNL Plugin(s)
 
-*Last updated: 2025-12-03 06:21:37 UTC*
+*Last updated: 2025-12-04 06:21:24 UTC*
 
 
-## 🔒 Plugin ID: 189996
+## <img src="assets/plugin-images/189996_icon.png" alt="Word Search icon" width="32"/> [Word Search](https://usetrmnl.com/recipes/189996)
 
-**Status**: ⏳ Not yet published on TRMNL or API unavailable
+![Word Search screenshot](assets/plugin-images/189996_screenshot.png)
 
-This plugin is configured but either hasn't been published to the TRMNL marketplace yet or the API is temporarily unavailable.
+### Description
+Solve <strong>Word Search</strong>es directly on your TRMNL!<br /><br /> Get stuck on a tricky word search puzzle?<br />Simply scan the QR code to reveal the solution!
 
-**Plugin URL**: https://usetrmnl.com/recipes/189996
+### 📊 Statistics
+
+| Metric | Value |
+|--------|-------|
+| Installs | 1 |
+| Forks | 0 |
 
 ---
 
